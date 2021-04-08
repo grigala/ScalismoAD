@@ -1,15 +1,14 @@
 package com.kogecoo.scalaad.test.graph
 
 import com.kogecoo.scalaad.graph._
-import com.kogecoo.scalaad.value.ContainerValue
 import com.kogecoo.scalaad.test.helper.matcher.ValueMatcherAssert._
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatExactCompareRule
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatValueRule.Implicits._
 import com.kogecoo.scalaad.value.{ContainerValue, NonContainerValue}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 
-class ScalarConstSuite extends FunSuite {
+class ScalarConstSuite extends AnyFunSuite {
 
 
   implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
@@ -25,9 +24,9 @@ class ScalarConstSuite extends FunSuite {
 
     val a1 = ScalarConst[Seq, Float](3.1f)
 
-    a1.apply()                shouldBe 3.1f
-    a1.deriv(var12_3)         shouldBe Seq(0f, 0f)
-    a1.propagate(value89)     shouldBe 0f
+    a1.apply() shouldBe 3.1f
+    a1.deriv(var12_3) shouldBe Seq(0f, 0f)
+    a1.propagate(value89) shouldBe 0f
     a1.propagate(cValue10_11) shouldBe Seq(0.0f, 0.0f)
 
   }

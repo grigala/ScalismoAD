@@ -5,10 +5,10 @@ import com.kogecoo.scalaad.test.helper.matcher.ValueMatcherAssert._
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatExactCompareRule
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatValueRule.Implicits._
 import com.kogecoo.scalaad.value.{ContainerValue, NonContainerValue}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 
-class ContainerConstSuite extends FunSuite {
+class ContainerConstSuite extends AnyFunSuite {
 
   implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
 
@@ -23,9 +23,9 @@ class ContainerConstSuite extends FunSuite {
 
     val a1 = ContainerConst[Seq, Float](Seq(3.1f, 41.5f))
 
-    a1.apply()                shouldBe Seq(3.1f, 41.5f)
-    a1.deriv(var12_3)         shouldBe Seq(0f, 0f)
-    a1.propagate(value89)     shouldBe Seq(0f, 0f)
+    a1.apply() shouldBe Seq(3.1f, 41.5f)
+    a1.deriv(var12_3) shouldBe Seq(0f, 0f)
+    a1.propagate(value89) shouldBe Seq(0f, 0f)
     a1.propagate(cValue10_11) shouldBe Seq(0.0f, 0.0f)
 
   }

@@ -24,12 +24,14 @@ println(y.gradient)
 ```
 
 ## TODO
+
 * test
 * make it to be multiple package
 * exclude Nd4jRule and BreezeRule to other package
 * maven repo
 
 ## Reference
+
 * http://d.hatena.ne.jp/Nos/20130811/1376232751
 * http://www.win-vector.com/dfiles/ReverseAccumulation.pdf
 * http://www.win-vector.com/blog/2010/07/gradients-via-reverse-accumulation/

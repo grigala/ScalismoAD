@@ -1,23 +1,21 @@
 package com.kogecoo.scalaad.test.graph.math.spec
 
-import com.kogecoo.scalaad.graph.{tanh, cos, Node}
+import com.kogecoo.scalaad.graph.{Node, tanh}
 import com.kogecoo.scalaad.rule._
 import com.kogecoo.scalaad.test.helper.gen._
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatSoftCompareRule
 import com.kogecoo.scalaad.test.helper.rule.SeqFloatValueRule.Implicits._
-import com.kogecoo.scalaad.test.helper.specgen.{UnaryOpSpec, UnaryOpExpectedBehaviorDef}
+import com.kogecoo.scalaad.test.helper.specgen.{UnaryOpExpectedBehaviorDef, UnaryOpSpec}
 import org.scalacheck.Properties
-
-import scala.language.higherKinds
 
 
 object TanhSpecSeqFloat extends Properties("Tanh - Seq[Float]") {
 
   implicit val compareRule = new SeqFloatSoftCompareRule
 
-  val nodeGen  = new SeqFloatNodeGenWithValueRange(-1e15f, 1e15f)
+  val nodeGen = new SeqFloatNodeGenWithValueRange(-1e15f, 1e15f)
   val valueGen = new SeqFloatValueGenWithValueRange(-1e15f, 1e15f)
-  val expects  = new TanhSeqFloatExpectedBehavior
+  val expects = new TanhSeqFloatExpectedBehavior
 
   val seqFloatSpecGen = new UnaryOpSpec[Seq, Float](expects, nodeGen, valueGen)
 
@@ -25,21 +23,21 @@ object TanhSpecSeqFloat extends Properties("Tanh - Seq[Float]") {
   property("tanh(a) apply") = seqFloatSpecGen.applyContainer()
   property("tanh(a) apply") = seqFloatSpecGen.applyVar()
 
-  property("tanh(a) (scalar) w.r.t. unknown var")          = seqFloatSpecGen.derivScalarWrtUnknownVar()
-  property("tanh(a) (container) w.r.t. unknown var")       = seqFloatSpecGen.derivContainerWrtUnknownVar()
-  property("tanh(a) (var) w.r.t. a")                       = seqFloatSpecGen.derivVarWrtSelf()
-  property("tanh(a) (var) w.r.t. unknonw var")             = seqFloatSpecGen.derivVarWrtUnknownVar()
+  property("tanh(a) (scalar) w.r.t. unknown var") = seqFloatSpecGen.derivScalarWrtUnknownVar()
+  property("tanh(a) (container) w.r.t. unknown var") = seqFloatSpecGen.derivContainerWrtUnknownVar()
+  property("tanh(a) (var) w.r.t. a") = seqFloatSpecGen.derivVarWrtSelf()
+  property("tanh(a) (var) w.r.t. unknonw var") = seqFloatSpecGen.derivVarWrtUnknownVar()
 
-  property("tanh(a) (scalar) propagete with value")        = seqFloatSpecGen.propagateScalarWithNCValue()
-  property("tanh(a) (scalar) propagate with container")    = seqFloatSpecGen.propagateScalarWithCValue()
-  property("tanh(a) (container) propagete with value")     = seqFloatSpecGen.propagateContainerWithNCValue()
+  property("tanh(a) (scalar) propagete with value") = seqFloatSpecGen.propagateScalarWithNCValue()
+  property("tanh(a) (scalar) propagate with container") = seqFloatSpecGen.propagateScalarWithCValue()
+  property("tanh(a) (container) propagete with value") = seqFloatSpecGen.propagateContainerWithNCValue()
   property("tanh(a) (container) propagate with container") = seqFloatSpecGen.propagateContainerWithCValue()
-  property("tanh(a) (var) propagete with value")           = seqFloatSpecGen.propagateVarWithNCValue()
-  property("tanh(a) (var) propagate with container")       = seqFloatSpecGen.propagateVarWithCValue()
+  property("tanh(a) (var) propagete with value") = seqFloatSpecGen.propagateVarWithNCValue()
+  property("tanh(a) (var) propagate with container") = seqFloatSpecGen.propagateVarWithCValue()
 
-  property("tanh(a) (scalar) grad")    = seqFloatSpecGen.gradScalar()
+  property("tanh(a) (scalar) grad") = seqFloatSpecGen.gradScalar()
   property("tanh(a) (container) grad") = seqFloatSpecGen.gradContainer()
-  property("tanh(a) (var) grad")       = seqFloatSpecGen.gradVar()
+  property("tanh(a) (var) grad") = seqFloatSpecGen.gradVar()
 
 }
 
@@ -52,9 +50,11 @@ class TanhSeqFloatExpectedBehavior(implicit vr: MathRule[Seq, Float]) extends Un
 
   override def op(node: Node[Seq, Float]): Node[Seq, Float] = tanh(node)
 
-  override def applyScalar(a: Float): Float              = scala.math.tanh(a).toFloat
+  override def applyScalar(a: Float): Float = scala.math.tanh(a).toFloat
+
   override def applyContainer(a: Seq[Float]): Seq[Float] = a.map { x => scala.math.tanh(x.toDouble).toFloat }
-  override def applyVar(a: Seq[Float]): Seq[Float]       = a.map { x => scala.math.tanh(x.toDouble).toFloat }
+
+  override def applyVar(a: Seq[Float]): Seq[Float] = a.map { x => scala.math.tanh(x.toDouble).toFloat }
 
   override def derivVarWrtSelf(a: Seq[Float]): Seq[Float] = a.map { x =>
     val tanhx = scala.math.tanh(x.toDouble).toFloat

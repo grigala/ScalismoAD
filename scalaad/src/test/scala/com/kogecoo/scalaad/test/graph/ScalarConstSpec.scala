@@ -11,8 +11,6 @@ import org.scalacheck.Prop.forAll
 import org.scalacheck.{Prop, Properties}
 
 
-
-
 object ScalarConstSpec extends Properties("ScalarConst") {
 
     implicit val seqFloatCompareRule = new SeqFloatExactCompareRule

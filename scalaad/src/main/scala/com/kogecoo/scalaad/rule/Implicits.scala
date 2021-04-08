@@ -3,8 +3,6 @@ package com.kogecoo.scalaad.rule
 import com.kogecoo.scalaad.value.{ContainerValue, NonContainerValue, Value}
 
 
-
-
 object Implicits {
 
     implicit class ValueOps[U[_], T](val self: U[T]) extends AnyVal {

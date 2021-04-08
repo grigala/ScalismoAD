@@ -5,8 +5,8 @@ Automatic differentiation for Scala
 ## Use
 
 ```scala
-import com.kogecoo.scalaad.graph.Var  // always need to import
-import com.kogecoo.scalaad.ScalarRule.Implicits._  // when x is a scalar variable
+import com.kogecoo.scalaad.graph.Var // always need to import
+import com.kogecoo.scalaad.ScalarRule.Implicits._ // when x is a scalar variable
 
 val x = Var(5.0)
 val y = 2 * x + 3 * x * y

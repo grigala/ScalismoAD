@@ -4,8 +4,6 @@ import com.kogecoo.scalaad.graph.Node
 import com.kogecoo.scalaad.rule.ValueRule
 
 
-
-
 abstract class BinaryOpExpectedBehaviorDef[U[_], T](implicit vr: ValueRule[U, T]) {
 
     val zero: T

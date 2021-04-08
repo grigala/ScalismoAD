@@ -9,8 +9,6 @@ import com.kogecoo.scalaad.test.helper.specgen.{BinaryOpExpectedBehaviorDef, Bin
 import org.scalacheck.Properties
 
 
-
-
 object SubSpecSeqFloat extends Properties("Sub - Seq[Float]") {
 
     val nodeGen = new SeqFloatNodeGen

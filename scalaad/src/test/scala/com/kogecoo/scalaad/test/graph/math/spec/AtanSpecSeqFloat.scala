@@ -9,8 +9,6 @@ import com.kogecoo.scalaad.test.helper.specgen.{UnaryOpExpectedBehaviorDef, Unar
 import org.scalacheck.Properties
 
 
-
-
 object AtanSpecSeqFloat extends Properties("Atan - Seq[Float]") {
 
     implicit val compareRule = new SeqFloatSoftCompareRule

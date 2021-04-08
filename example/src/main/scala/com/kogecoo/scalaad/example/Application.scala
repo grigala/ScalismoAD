@@ -5,6 +5,8 @@ import com.kogecoo.scalaad.graph.{Var, sin}
 
 object Application {
     def main(args: Array[String]) = {
+        scalismo.initialize()
+
         scalarExample()
         breezeExample()
     }

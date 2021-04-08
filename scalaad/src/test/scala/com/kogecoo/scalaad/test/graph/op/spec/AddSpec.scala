@@ -107,6 +107,8 @@ class AddSeqFloatExpectedBehavior(implicit vr: ValueRule[Seq, Float]) extends Bi
 
   override def derivVarContainerWrtLeft(a: Seq[Float], b: Seq[Float]): Seq[Float] = one(a)
 
+  def one(shape: Seq[Float]): Seq[Float] = Seq.fill(shape.size)(1f)
+
   override def derivVarScalarWrtLeft(a: Seq[Float], b: Float): Seq[Float] = one(a)
 
   override def derivVarVarWrtLeft(a: Seq[Float], b: Seq[Float]): Seq[Float] = one(a)
@@ -136,8 +138,6 @@ class AddSeqFloatExpectedBehavior(implicit vr: ValueRule[Seq, Float]) extends Bi
   override def propagateVarVarWithCValue(a: Seq[Float], b: Seq[Float], c: Seq[Float]): Seq[Float] = c.map(2f * _)
 
   override def gradScalarVar(a: Float, b: Seq[Float]): Seq[Float] = one(b)
-
-  def one(shape: Seq[Float]): Seq[Float] = Seq.fill(shape.size)(1f)
 
   override def gradContainerVar(a: Seq[Float], b: Seq[Float]): Seq[Float] = one(b)
 

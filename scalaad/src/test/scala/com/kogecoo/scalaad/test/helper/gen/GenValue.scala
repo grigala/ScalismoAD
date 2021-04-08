@@ -5,8 +5,6 @@ import org.scalacheck.Gen
 import org.scalacheck.Gen.oneOf
 
 
-
-
 abstract class GenValue[U[_], T] {
 
     lazy val defaultRestriction = (_: T) => true

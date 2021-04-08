@@ -11,8 +11,6 @@ import org.scalacheck.Prop.forAll
 import org.scalacheck.{Prop, Properties}
 
 
-
-
 object ContainerConstSpec extends Properties("ContainerConst") {
 
     implicit val scalarIntCompareRule = new ScalarIntCompareRule

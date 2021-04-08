@@ -12,7 +12,7 @@ import scala.util.Random
 
 class SinSuite extends AnyFunSuite {
 
-  implicit val seqFloatCompareRule = new SeqFloatSoftCompareRule
+    implicit val seqFloatCompareRule = new SeqFloatSoftCompareRule
 
   test("Sin - Seq[Float]") {
 

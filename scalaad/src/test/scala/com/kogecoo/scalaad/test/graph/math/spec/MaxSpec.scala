@@ -9,8 +9,6 @@ import com.kogecoo.scalaad.test.helper.specgen.{BinaryOpExpectedBehaviorDef, Bin
 import org.scalacheck.Properties
 
 
-
-
 object MaxSpecSeqFloat extends Properties("Max - Seq[Float]") {
 
 

@@ -10,7 +10,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class VarSuite extends AnyFunSuite {
 
-  implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
+    implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
 
   test("Var - Seq[Float]") {
 

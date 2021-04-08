@@ -11,8 +11,6 @@ import org.scalacheck.Prop.forAll
 import org.scalacheck.{Prop, Properties}
 
 
-
-
 object VarSpec extends Properties("Var") {
 
     implicit val scalarIntCompareRule = new ScalarIntCompareRule

@@ -9,8 +9,6 @@ import com.kogecoo.scalaad.test.helper.specgen.{UnaryOpExpectedBehaviorDef, Unar
 import org.scalacheck.Properties
 
 
-
-
 object ExpSpecSeqFloat extends Properties("Exp - Seq[Float]") {
 
     implicit val compareRule = new SeqFloatSoftCompareRule

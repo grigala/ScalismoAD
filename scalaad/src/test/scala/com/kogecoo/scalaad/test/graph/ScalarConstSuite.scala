@@ -11,7 +11,7 @@ import org.scalatest.funsuite.AnyFunSuite
 class ScalarConstSuite extends AnyFunSuite {
 
 
-  implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
+    implicit val seqFloatCompareRule = new SeqFloatExactCompareRule
 
   test("ScalarConst - Seq[Float]") {
 

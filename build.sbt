@@ -1,27 +1,22 @@
 lazy val root = project.in(file("."))
-    .aggregate(scalaad, breeze)
+    .aggregate(scalismoad)
     .settings(commonSettings: _*)
-    .settings(name := "scalaad-root")
+    .settings(name := "scalismoad-root")
     .settings(publish := {})
     .settings(testSettings: _*)
 
-lazy val scalaad = project.in(file("scalaad"))
+lazy val scalismoad = project.in(file("scalismoad"))
     .settings(commonSettings ++ commonPublishSettings: _*)
-    .settings(name := "scalaad")
-
-lazy val breeze = project.in(file("breeze"))
-    .dependsOn(scalaad)
-    .settings(commonSettings ++ commonPublishSettings: _*)
+    .settings(name := "scalismoad")
 
 lazy val example = project.in(file("example"))
-    .dependsOn(breeze)
-    .dependsOn(scalaad)
+    .dependsOn(scalismoad)
     .settings(commonSettings: _*)
 
 lazy val commonSettings = Seq(
-    organization := "com.kogecoo",
+    organization := "ch.grigala",
     name := {
-        name("scalaad-" + _)
+        name("scalismoad-" + _)
     }.value,
     version := "0.0.1-SNAPSHOT",
     scalaVersion := "2.13.5",
@@ -58,7 +53,9 @@ lazy val commonResolvers = Seq(
 
 lazy val commonLibraryDependencies = Seq(
     "org.scalacheck" %% "scalacheck" % "1.14.1" % "test",
-    "org.scalatest" %% "scalatest" % "3.2.5" % "test"
+    "org.scalatest" %% "scalatest" % "3.2.5" % "test",
+    "org.scalanlp" %% "breeze" % "1.0",
+    "org.scalanlp" %% "breeze-natives" % "1.0"
 )
 
 lazy val commonPomExtra = {

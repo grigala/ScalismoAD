@@ -2,6 +2,8 @@ package ch.grigala.ad.rule
 
 import ch.grigala.ad.graph.{Scalar, ScalarConst}
 
+import scala.language.implicitConversions
+
 object DoubleRule {
 
     trait DoubleValueRule extends ValueRule[Scalar, Double] {
@@ -207,6 +209,8 @@ object DoubleRule {
 
     class DoubleWrapperRule extends ValueWrapperRule[Double, Scalar, Double] {
         override def toWrapper(src: Double): Scalar[Double] = Scalar(src)
+
+        override def toWrappee(data: Scalar[_]): Double = data.getData.asInstanceOf[Double]
     }
 
     object Implicits {

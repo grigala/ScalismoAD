@@ -1,25 +1,17 @@
 package ch.grigala.ad.example
 
 import breeze.linalg.DenseVector
-import ch.grigala.ad.graph.{Var, sin}
+import ch.grigala.ad.graph.{Scalar, Var, sin}
+import ch.grigala.ad.rule.DoubleRule.Implicits.doubleWrapperRule
 
 object Application {
-    def main(args: Array[String]) = {
-        scalismo.initialize()
-        implicit val rng = scalismo.utils.Random(42)
+    def main(args: Array[String]): Unit = {
 
-        val a = 0.2
-        val b = 3
-        val sigma2 = 0.5
-        val errorDist = breeze.stats.distributions.Gaussian(0, sigma2)
-        val data = for (x <- 0 until 100) yield {
-            (x.toDouble, a * x + b + errorDist.draw())
-        }
         scalarExample()
         breezeExample()
     }
 
-    def scalarExample() = {
+    def scalarExample(): Unit = {
         import ch.grigala.ad.rule.ScalarRule.Implicits._
 
         val x = Var(5.0)
@@ -27,15 +19,15 @@ object Application {
         val z = x * sin(x) * 2 + y * x * 3
 
         println(z)
-        println(z.deriv(x)) // forward-mode automatic differentiation
-        println(z.deriv(y))
+        println(doubleWrapperRule.toWrappee(z.deriv(x).unwrap.asInstanceOf[Scalar[_]])) // forward-mode automatic differentiation
+        println(doubleWrapperRule.toWrappee(z.deriv(y).unwrap.asInstanceOf[Scalar[_]]))
 
-        println(z.grad()) // reverse-mode automatic differentiation
-        println(x.gradient) // we can get partial differentiation through gradient after run grad()
-        println(y.gradient)
+        println(doubleWrapperRule.toWrappee(z.grad().unwrap.asInstanceOf[Scalar[_]])) // reverse-mode automatic differentiation
+        println(doubleWrapperRule.toWrappee(x.gradient.unwrap.asInstanceOf[Scalar[_]])) // we can get partial differentiation through gradient after run grad()
+        println(doubleWrapperRule.toWrappee(y.gradient.unwrap.asInstanceOf[Scalar[_]]))
     }
 
-    def breezeExample() = {
+    def breezeExample(): Unit = {
         import ch.grigala.ad.rule.BreezeRule.Implicits._
 
         val x = Var(DenseVector(1.0, 2.0, 3.0))
@@ -43,10 +35,10 @@ object Application {
         val y = 1 * sin(x) * 2 + x * 3
 
         println(y)
-        println(y.deriv(x))
+        println(y.deriv(x).unwrap.asInstanceOf[DenseVector[Double]])
 
-        println(y.grad())
-        println(x.gradient)
+        println(y.grad().unwrap.asInstanceOf[DenseVector[Double]])
+        println(x.gradient.asInstanceOf[DenseVector[Double]])
     }
 
 }

@@ -49,5 +49,7 @@ abstract class Value[U[_], T] {
     def unary_-(implicit vr: ValueRule[U, T]): Value[U, T]
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T]
+
+    def unwrap: Any
 }
 

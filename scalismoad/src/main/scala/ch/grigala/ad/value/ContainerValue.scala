@@ -123,4 +123,5 @@ case class ContainerValue[U[_], T](data: U[T]) extends Value[U, T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T] = ContainerValue[U, T](vr.transposeS(data))
 
+    override def unwrap: U[T] = data
 }

@@ -1,11 +1,12 @@
-package ch.grigala.scalismoad
+package ch.grigala.scalismoad.example
 
 import breeze.linalg.DenseVector
 import ch.grigala.scalismoad.graph.{Scalar, Var, sin}
-import ch.grigala.scalismoad.rule.DoubleRule.Implicits.doubleWrapperRule
 
 object Application {
     def main(args: Array[String]): Unit = {
+
+        scalismo.initialize()
 
         scalarExample()
         breezeExample()

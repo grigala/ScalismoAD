@@ -6,23 +6,21 @@ lazy val root = project.in(file("."))
     .settings(testSettings: _*)
 
 lazy val scalismoad = project.in(file("scalismoad"))
-    .settings(commonSettings ++ commonPublishSettings: _*)
+    .settings(commonSettings: _*)
     .settings(name := "scalismoad")
 
 lazy val example = project.in(file("example"))
     .dependsOn(scalismoad)
+    .settings(name := "example")
     .settings(commonSettings: _*)
 
 lazy val commonSettings = Seq(
-    organization := "ch.grigala",
-    name := {
-        name("scalismoad-" + _)
-    }.value,
-    version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.13.5",
-    crossScalaVersions := Seq("2.11.7"),
-    scalacOptions ++= commonScalacOptions,
-    resolvers ++= commonResolvers,
+    organization        := "ch.grigala",
+    version             := "0.0.1-SNAPSHOT",
+    scalaVersion        := "2.13.1",
+    crossScalaVersions  := Seq("2.11.7"),
+    scalacOptions       ++= commonScalacOptions,
+    resolvers           ++= commonResolvers,
     libraryDependencies ++= commonLibraryDependencies
 )
 
@@ -55,7 +53,9 @@ lazy val commonLibraryDependencies = Seq(
     "org.scalacheck" %% "scalacheck" % "1.14.1" % "test",
     "org.scalatest" %% "scalatest" % "3.2.5" % "test",
     "org.scalanlp" %% "breeze" % "1.0",
-    "org.scalanlp" %% "breeze-natives" % "1.0"
+    "org.scalanlp" %% "breeze-natives" % "1.0",
+    "ch.unibas.cs.gravis" % "scalismo-native-all" % "4.0.1",
+    "ch.unibas.cs.gravis" %% "scalismo-ui" % "0.90.0"
 )
 
 lazy val commonPomExtra = {

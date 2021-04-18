@@ -195,7 +195,7 @@ object BreezeRule {
 
         override def sqrtM(v: D): D = breeze.numerics.sqrt(v)
 
-        // TODO: fix this implicit arguent error
+        // TODO: fix this implicit argument error
         override def powSS(v: DV, p: DV): DV = breeze.numerics.pow(v, p)
 
         override def powSM(v: DV, p: D): DV = breeze.numerics.pow(v, p)

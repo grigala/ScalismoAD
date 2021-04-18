@@ -1,5 +1,6 @@
 package ch.grigala.scalismoad.value
 
+import ch.grigala.scalismoad.graph.Scalar
 import ch.grigala.scalismoad.rule.ValueRule
 
 // wrapper for intermediate value of derivation.
@@ -50,6 +51,6 @@ abstract class Value[U[_], T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T]
 
-    def unwrap: Any
+    def unwrap: Scalar[_]
 }
 

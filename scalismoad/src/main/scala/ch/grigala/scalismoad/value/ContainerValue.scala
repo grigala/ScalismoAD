@@ -1,5 +1,6 @@
 package ch.grigala.scalismoad.value
 
+import ch.grigala.scalismoad.graph.Scalar
 import ch.grigala.scalismoad.rule.ValueRule
 
 case class ContainerValue[U[_], T](data: U[T]) extends Value[U, T] {
@@ -123,5 +124,5 @@ case class ContainerValue[U[_], T](data: U[T]) extends Value[U, T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T] = ContainerValue[U, T](vr.transposeS(data))
 
-    override def unwrap: U[T] = data
+    override def unwrap: Scalar[_] = data.asInstanceOf[Scalar[_]]
 }

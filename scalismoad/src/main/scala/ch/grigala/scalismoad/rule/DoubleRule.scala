@@ -210,7 +210,7 @@ object DoubleRule {
     class DoubleWrapperRule extends ValueWrapperRule[Double, Scalar, Double] {
         override def toWrapper(src: Double): Scalar[Double] = Scalar(src)
 
-        override def toWrappee(data: Scalar[_]): Double = data.getData.asInstanceOf[Double]
+        override def toWrappee(data: Scalar[_]): Double = data.asInstanceOf[Double]
     }
 
     object Implicits {

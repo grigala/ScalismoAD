@@ -55,7 +55,9 @@ lazy val commonLibraryDependencies = Seq(
     "org.scalanlp" %% "breeze" % "1.0",
     "org.scalanlp" %% "breeze-natives" % "1.0",
     "ch.unibas.cs.gravis" % "scalismo-native-all" % "4.0.1",
-    "ch.unibas.cs.gravis" %% "scalismo-ui" % "0.90.0"
+    "ch.unibas.cs.gravis" %% "scalismo-ui" % "0.90.0",
+    // Experimending
+    "com.github.breandan" %% "kotlingrad" % "0.4.2" from "file:///Users/george/dev/git/ScalismoAD/lib/kotlingrad-0.4.2.jar"
 )
 
 lazy val commonPomExtra = {

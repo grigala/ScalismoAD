@@ -1,5 +1,6 @@
 package ch.grigala.scalismoad.value
 
+import ch.grigala.scalismoad.graph.Scalar
 import ch.grigala.scalismoad.rule.ValueRule
 
 case class NonContainerValue[U[_], T](data: T) extends Value[U, T] {
@@ -123,7 +124,8 @@ case class NonContainerValue[U[_], T](data: T) extends Value[U, T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T] = NonContainerValue[U, T](vr.transposeM(data))
 
-    override def unwrap: T = data
+    override def unwrap: Scalar[_] = Scalar(data)
+
 }
 
 

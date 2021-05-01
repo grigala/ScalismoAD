@@ -33,9 +33,6 @@ case class MalaProposal[A](evaluator: DistributionEvaluator[A] with GradientEval
 
     override def logTransitionProbability(from: A, to: A): Double = {
         val g = sampleLens.get(evaluatorGradient(from))
-        Math.exp(
-            breeze.linalg
-                .norm(sampleLens.get(to) - sampleLens.get(from) - g * tau, 2) * (-1.0 / (4 * tau))
-        )
+        Math.exp(breeze.linalg.norm(sampleLens.get(to) - sampleLens.get(from) - g * tau, 2) * (-1.0 / (4 * tau)))
     }
 }

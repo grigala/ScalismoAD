@@ -29,6 +29,7 @@ case class Mul[U[_], T](lhs: Node[U, T], rhs: Node[U, T])(implicit r: ValueRule[
     override def apply(): Value[U, T] = lhs() * rhs()
 
     override def deriv(wrt: Var[U, T]): Value[U, T] = {
+        // f*g = f'*g + f*g'
         lhs.deriv(wrt) * rhs() + lhs() * rhs.deriv(wrt)
     }
 

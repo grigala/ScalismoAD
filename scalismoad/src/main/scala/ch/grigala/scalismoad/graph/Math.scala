@@ -137,10 +137,10 @@ class tanh[U[_], T](v: Node[U, T])(implicit vr: MathRule[U, T]) extends UnaryOp[
     }
 }
 
-class ln[U[_], T](v: Node[U, T])(implicit r: MathRule[U, T]) extends UnaryOp[U, T] {
+class log[U[_], T](v: Node[U, T])(implicit r: MathRule[U, T]) extends UnaryOp[U, T] {
     override def toString: String = s"ln(${v})"
 
-    override def apply(): Value[U, T] = ln(v())
+    override def apply(): Value[U, T] = log(v())
 
     override def deriv(wrt: Var[U, T]): Value[U, T] = v.deriv(wrt) / v()
 
@@ -198,7 +198,7 @@ class pow[U[_], T](a: Node[U, T], b: Node[U, T])(implicit r: MathRule[U, T]) ext
         val b_minus_one = b_val - r.one
 
         val lhs = a.deriv(wrt) * b_val * pow(a_val, b_minus_one)
-        val rhs = b.deriv(wrt) * ln(a_val) * pow(a_val, b_val)
+        val rhs = b.deriv(wrt) * log(a_val) * pow(a_val, b_val)
         lhs + rhs
     }
 
@@ -208,7 +208,7 @@ class pow[U[_], T](a: Node[U, T], b: Node[U, T])(implicit r: MathRule[U, T]) ext
         val b_minus_one = b_val - r.one
 
         val lhs = a.propagate(g * b_val * pow(a_val, b_minus_one))
-        val rhs = b.propagate(g * ln(a_val) * pow(a_val, b_val))
+        val rhs = b.propagate(g * log(a_val) * pow(a_val, b_val))
         lhs + rhs
     }
 }
@@ -331,12 +331,12 @@ object tanh {
     }
 }
 
-object ln {
-    def apply[U[_], T](v: Node[U, T])(implicit vr: MathRule[U, T]): ln[U, T] = new ln(v)
+object log {
+    def apply[U[_], T](v: Node[U, T])(implicit vr: MathRule[U, T]): log[U, T] = new log(v)
 
     def apply[U[_], T](v: Value[U, T])(implicit mr: MathRule[U, T]): Value[U, T] = v match {
         case v: NonContainerValue[U, T] => NonContainerValue[U, T](mr.lnM(v.data))
-        case v: ContainerValue[U, T] => ContainerValue[U, T](mr.lnS(v.data))
+        case v: ContainerValue[U, T] => ContainerValue[U, T](mr.logS(v.data))
     }
 }
 

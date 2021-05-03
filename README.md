@@ -14,6 +14,10 @@ Below is a collection of useful resources
 - [Automatic Differentiation Explained with Example](https://youtu.be/jS-0aAamC64)
 - [Differentiable Functional Programming by Noel Welsh
   ](https://youtu.be/nETDYWAHAfE)
+
+- [The Stan Math Library: Reverse-Mode Automatic Differentiation in C++](https://arxiv.org/abs/1509.07164)
+- [A Review of Automatic Differentiation and its Efficient Implementation
+  ](https://arxiv.org/abs/1811.05031)
   
 ### Scalismo Tutorials
 

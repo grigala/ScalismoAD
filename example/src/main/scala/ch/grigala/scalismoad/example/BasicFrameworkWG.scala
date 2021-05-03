@@ -3,7 +3,7 @@ package ch.grigala.scalismoad.example
 import breeze.stats.meanAndVariance
 import ch.grigala.scalismoad.data.{Parameters, Sample}
 import ch.grigala.scalismoad.logging.Logger
-import ch.grigala.scalismoad.sampling.GaussianCompGraph
+import ch.grigala.scalismoad.sampling.NormalGaussianLogLikelihood
 import ch.grigala.scalismoad.sampling.evaluators.ProductEvaluator
 import scalismo.sampling.algorithms.MetropolisHastings
 import scalismo.sampling.proposals.MixtureProposal
@@ -58,12 +58,12 @@ case class LikelihoodEvaluatorWithGradient(data: Seq[(Double, Double)])
         with GradientEvaluator[Sample] {
 
     override def logValue(theta: Sample): Double = {
-        val compGraph = GaussianCompGraph(theta, data)
+        val compGraph = NormalGaussianLogLikelihood(theta, data)
         compGraph.value
     }
 
     override def gradient(theta: Sample): Sample = {
-        val compGraph = GaussianCompGraph(theta, data)
+        val compGraph = NormalGaussianLogLikelihood(theta, data)
         val newParameters = theta.parameters.copy(
             a = compGraph.gradients._1,
             b = compGraph.gradients._2,

@@ -20,7 +20,7 @@ trait MathRule[U[_], T] extends ValueRule[U, T] {
 
     def tanhS(v: U[T]): U[T]
 
-    def lnS(v: U[T]): U[T]
+    def logS(v: U[T]): U[T]
 
     def expS(v: U[T]): U[T]
 

@@ -178,7 +178,7 @@ trait SeqFloatMathRule extends MathRule[Seq, Float] {
 
     override def tanhS(v: Seq[Float]): Seq[Float] = v.map(scala.math.tanh(_).toFloat)
 
-    override def lnS(v: Seq[Float]): Seq[Float] = v.map(scala.math.log(_).toFloat)
+    override def logS(v: Seq[Float]): Seq[Float] = v.map(scala.math.log(_).toFloat)
 
     override def expS(v: Seq[Float]): Seq[Float] = v.map(scala.math.exp(_).toFloat)
 

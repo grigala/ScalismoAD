@@ -161,7 +161,7 @@ object BreezeRule {
 
         override def tanhS(v: DV): DV = breeze.numerics.tanh(v)
 
-        override def lnS(v: DV): DV = breeze.numerics.log(v)
+        override def logS(v: DV): DV = breeze.numerics.log(v)
 
         override def expS(v: DV): DV = breeze.numerics.exp(v)
 
@@ -362,7 +362,7 @@ object BreezeRule {
 
         override def tanhS(v: DM): DM = breeze.numerics.tanh(v)
 
-        override def lnS(v: DM): DM = breeze.numerics.log(v)
+        override def logS(v: DM): DM = breeze.numerics.log(v)
 
         override def expS(v: DM): DM = breeze.numerics.exp(v)
 

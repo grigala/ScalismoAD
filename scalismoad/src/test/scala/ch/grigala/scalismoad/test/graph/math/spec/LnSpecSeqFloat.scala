@@ -1,13 +1,11 @@
 package ch.grigala.scalismoad.test.graph.math.spec
 
-import ch.grigala.scalismoad.graph.{Node, ln}
+import ch.grigala.scalismoad.graph.{Node, log}
 import ch.grigala.scalismoad.rule._
 import ch.grigala.scalismoad.test.helper.gen.{SeqFloatNodeGenWithValueRange, SeqFloatValueGenWithValueRange}
 import ch.grigala.scalismoad.test.helper.rule.SeqFloatSoftCompareRule
-import ch.grigala.scalismoad.test.helper.gen._
 import ch.grigala.scalismoad.test.helper.rule.SeqFloatValueRule.Implicits._
 import ch.grigala.scalismoad.test.helper.specgen.{UnaryOpExpectedBehaviorDef, UnaryOpSpec}
-import ch.grigala.scalismoad.test.helper.specgen.UnaryOpExpectedBehaviorDef
 import org.scalacheck.Properties
 
 
@@ -50,7 +48,7 @@ class LnSeqFloatExpectedBehavior(implicit vr: MathRule[Seq, Float]) extends Unar
 
     override def zero(shape: Seq[Float]): Seq[Float] = Seq.fill(shape.size)(0f)
 
-    override def op(node: Node[Seq, Float]): Node[Seq, Float] = ln(node)
+    override def op(node: Node[Seq, Float]): Node[Seq, Float] = log(node)
 
     override def applyScalar(a: Float): Float = scala.math.log(a).toFloat
 

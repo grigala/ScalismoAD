@@ -1,11 +1,16 @@
 package ch.grigala.scalismoad.example
 
 import breeze.linalg.DenseVector
+import ch.grigala.scalismoad.graph._
+import ch.grigala.scalismoad.logging.VerbosePrintLogger
+import ch.grigala.scalismoad.rule.ScalarRule.Implicits._
 import ch.grigala.scalismoad.sampling.SampleLens
 import ch.grigala.scalismoad.sampling.evaluators.ProductEvaluator
 import ch.grigala.scalismoad.sampling.proposals.MalaProposal
 import scalismo.sampling.algorithms.MetropolisHastings
-import scalismo.sampling.{DistributionEvaluator, GradientEvaluator}
+import scalismo.sampling.loggers.AcceptRejectLogger
+import scalismo.sampling.{DistributionEvaluator, GradientEvaluator, ProposalGenerator}
+import spire.algebra.Semigroup
 
 // Parameter class - This is generic and every application chooses its
 // own structures of the parameters
@@ -13,6 +18,16 @@ case class MALAParameters(mu: Double, sigma: Double)
 
 case class MALASample(parameters: MALAParameters, generatedBy: String)
 
+object MALASample {
+    implicit object semiGroupMalaSample extends Semigroup[MALASample] {
+        override def combine(x: MALASample, y: MALASample): MALASample = {
+            x.copy(parameters = MALAParameters(
+                mu = x.parameters.mu + y.parameters.mu,
+                sigma = x.parameters.sigma + y.parameters.sigma
+            ))
+        }
+    }
+}
 
 // This typeclass instance is used to provide access to allow the
 // generically implemented proposals access the parameters
@@ -24,51 +39,62 @@ object AllParamLens extends SampleLens[MALASample, DenseVector[Double]] {
         v
     }
 
-    override def replace(
-                            sample: MALASample,
-                            vector: DenseVector[Double],
-                            generatedBy: Option[String]
-                        ): MALASample = {
-        sample.copy(parameters =
-            sample.parameters.copy(mu = vector(0), sigma = vector(1))
-        )
+    override def replace(fullSample: MALASample, partial: DenseVector[Double], generatedBy: Option[String]): MALASample = {
+        val params = fullSample.parameters.copy(mu = partial(0), sigma = partial(1))
+        fullSample.copy(parameters = params)
     }
 }
 
 // Gaussian likelihood - with gradient
-case class LikelihoodEvaluator(data: Seq[Double])
+case class MALALikelihoodEvaluator(data: Seq[Double])
     extends DistributionEvaluator[MALASample]
         with GradientEvaluator[MALASample] {
 
+    //    f(x, mu, sigma) = log(Normal(x|mu, sigma)
     override def logValue(theta: MALASample): Double = {
-        val likelihood = breeze.stats.distributions.Gaussian(
-            theta.parameters.mu,
-            theta.parameters.sigma
-        )
-        val likelihoods = for (x <- data) yield {
-            likelihood.logPdf(x)
-        }
-        likelihoods.sum
+        val notmalLogDensity = NormalGaussianLogLikelihood(theta, data)
+        notmalLogDensity.value
     }
 
     override def gradient(theta: MALASample): MALASample = {
-        val mu = theta.parameters.mu
-        val sigma = theta.parameters.sigma
-        val sigma2 = sigma * sigma
-        val sigma3 = sigma2 * sigma
-        val n = data.length
+        val g = NormalGaussianLogLikelihood(theta, data)
 
-        val dmu = 1.0 / sigma2 * data.map(x => x - mu).sum
-        val dsigma = -n / sigma + 1.0 / sigma3 * data.map(x => (x - mu) * (x - mu)).sum
-
-        val params = theta.parameters.copy(mu = dmu, sigma = dsigma)
+        val params = theta.parameters.copy(mu = g.gradients._1, sigma = g.gradients._2)
         theta.copy(parameters = params)
     }
 
 }
 
+case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
+    private val mu = Var(theta.parameters.mu)
+    private val sigma = Var(theta.parameters.sigma)
+    private val logNormalizer = 0.5 * log(sqrt(2.0 * scala.math.Pi)) + log(sigma)
+    private var compGraph: Node[Scalar, Double] = Var(0.0)
+
+    for (x <- data) yield {
+        val f = 0.5 * Neg(pow(x - mu, 2) / sigma) - logNormalizer
+        compGraph = compGraph + f
+    }
+
+    def computationalGraph: Node[Scalar, Double] = {
+        compGraph
+    }
+
+    def value: Double = {
+        val scalarValue = compGraph.apply().unwrap
+        scalarValue.data.asInstanceOf[Double]
+    }
+
+    def gradients: (Double, Double) = {
+        compGraph.grad()
+        val dfdmu = mu.gradient.unwrap.data.asInstanceOf[Double]
+        val dfdsigma = sigma.gradient.unwrap.data.asInstanceOf[Double]
+        (dfdmu, dfdsigma)
+    }
+}
+
 // Gaussian priors on the parameters. Also the prior needs to have a gradient
-object PriorEvaluator
+object MALAPriorEvaluator
     extends DistributionEvaluator[MALASample]
         with GradientEvaluator[MALASample] {
 
@@ -76,9 +102,7 @@ object PriorEvaluator
     val priorDistSigma = breeze.stats.distributions.Gaussian(0, 20)
 
     override def logValue(theta: MALASample): Double = {
-        priorDistMu.logPdf(theta.parameters.mu) + priorDistSigma.logPdf(
-            theta.parameters.sigma
-        )
+        priorDistMu.logPdf(theta.parameters.mu) + priorDistSigma.logPdf(theta.parameters.sigma)
     }
 
     override def gradient(sample: MALASample): MALASample = {
@@ -109,7 +133,7 @@ object MALAExample {
         val data = generateSyntheticData(100)
 
         // We use the new method  withGradient of the productEvaluator to combine evaluators that have gradients
-        val posteriorEvaluator = ProductEvaluator.withGradient[MALASample](PriorEvaluator, LikelihoodEvaluator(data))
+        val posteriorEvaluator = ProductEvaluator.withGradient(MALAPriorEvaluator, MALALikelihoodEvaluator(data))
 
         // Using the new Mala proposal as a gradient
         val generator = MalaProposal(posteriorEvaluator, 1e-3, AllParamLens)
@@ -119,14 +143,50 @@ object MALAExample {
         val chain = MetropolisHastings(generator, posteriorEvaluator)
 
         val initialSample = MALASample(MALAParameters(0, 1), generatedBy = "initial")
-        val mhIterator = chain.iterator(initialSample)
+        val malaLogger = new MalaLogger()
+        val mhIterator = chain.iterator(initialSample, malaLogger)
         val samples = mhIterator.drop(1000).take(10000).toIndexedSeq
 
-        val estimatedMean =
-            samples.map(sample => sample.parameters.mu).sum / samples.size
-        val estimatedSigma =
-            samples.map(sample => sample.parameters.sigma).sum / samples.size
+        val estimatedMean = samples.map(sample => sample.parameters.mu).sum / samples.size
+        val estimatedSigma = samples.map(sample => sample.parameters.sigma).sum / samples.size
 
         println((estimatedMean, estimatedSigma))
+    }
+}
+
+case class MalaLogger() extends AcceptRejectLogger[MALASample] {
+    private val numAccepted = collection.mutable.Map[String, Int]()
+    private val numRejected = collection.mutable.Map[String, Int]()
+    private val verbosePrintLogger = new VerbosePrintLogger[MALASample](Console.out, "")
+
+    override def accept(current: MALASample,
+                        sample: MALASample,
+                        generator: ProposalGenerator[MALASample],
+                        evaluator: DistributionEvaluator[MALASample]
+                       ): Unit = {
+        val numAcceptedSoFar = numAccepted.getOrElseUpdate(sample.generatedBy, 0)
+        numAccepted.update(sample.generatedBy, numAcceptedSoFar + 1)
+        verbosePrintLogger.accept(current, sample, generator, evaluator)
+    }
+
+    override def reject(current: MALASample,
+                        sample: MALASample,
+                        generator: ProposalGenerator[MALASample],
+                        evaluator: DistributionEvaluator[MALASample]
+                       ): Unit = {
+        val numRejectedSoFar = numRejected.getOrElseUpdate(sample.generatedBy, 0)
+        numRejected.update(sample.generatedBy, numRejectedSoFar + 1)
+        //        verbosePrintLogger.reject(current, sample, generator, evaluator)
+    }
+
+
+    def acceptanceRatios(): Map[String, Double] = {
+        val generatorNames = numRejected.keys.toSet.union(numAccepted.keys.toSet)
+        val acceptanceRatios = for (generatorName <- generatorNames) yield {
+            val total = (numAccepted.getOrElse(generatorName, 0)
+                + numRejected.getOrElse(generatorName, 0)).toDouble
+            (generatorName, numAccepted.getOrElse(generatorName, 0) / total)
+        }
+        acceptanceRatios.toMap
     }
 }

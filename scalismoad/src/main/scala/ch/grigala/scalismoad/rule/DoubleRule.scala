@@ -154,7 +154,7 @@ object DoubleRule {
 
         override def tanhS(v: Scalar[Double]): Scalar[Double] = Scalar(scala.math.tanh(v.data))
 
-        override def lnS(v: Scalar[Double]): Scalar[Double] = Scalar(scala.math.log(v.data))
+        override def logS(v: Scalar[Double]): Scalar[Double] = Scalar(scala.math.log(v.data))
 
         override def expS(v: Scalar[Double]): Scalar[Double] = Scalar(scala.math.exp(v.data))
 

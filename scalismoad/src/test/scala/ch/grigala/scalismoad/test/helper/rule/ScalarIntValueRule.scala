@@ -164,7 +164,7 @@ trait ScalarIntMathRule extends MathRule[Scalar, Int] {
 
     override def tanhS(v: Scalar[Int]): Scalar[Int] = Scalar(scala.math.tanh(v.data.toDouble).toInt)
 
-    override def lnS(v: Scalar[Int]): Scalar[Int] = Scalar(scala.math.log(v.data.toDouble).toInt)
+    override def logS(v: Scalar[Int]): Scalar[Int] = Scalar(scala.math.log(v.data.toDouble).toInt)
 
     override def expS(v: Scalar[Int]): Scalar[Int] = Scalar(scala.math.exp(v.data.toDouble).toInt)
 

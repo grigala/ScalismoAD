@@ -12,14 +12,14 @@ import scalismo.sampling.algorithms.MetropolisHastings
 import scalismo.sampling.evaluators.ProductEvaluator
 import scalismo.sampling.proposals.MixtureProposal
 import scalismo.statisticalmodel.MultivariateNormalDistribution
-import scalismo.ui.api.ScalismoUIHeadless
+import scalismo.ui.api.ScalismoUI
 import scalismo.utils.Random.implicits._
 
 object LandmarkFitting extends App {
 
     scalismo.initialize()
 
-    val ui = ScalismoUIHeadless()
+    val ui = ScalismoUI()
 
     val model = StatisticalModelIO.readStatisticalTriangleMeshModel3D(new java.io.File("datasets/bfm.h5")).get
 
@@ -104,9 +104,9 @@ object LandmarkFitting extends App {
 
     val (marginalizedModel, newCorrespondences) = marginalizeModelForCorrespondences(model, correspondences)
     for ((id, _, _) <- newCorrespondences) {
-        val meanPointPosition = computeMean(marginalizedModel, id)
+        val meanPointPosition = computeMean(marginalizedModel, id, samples)
         println(s"expected position for point at id $id  = $meanPointPosition")
-        val cov = computeCovarianceFromSampleLFs(marginalizedModel, id, meanPointPosition)
+        val cov = computeCovarianceFromSampleLFs(marginalizedModel, id, meanPointPosition, samples)
         println(
             s"posterior variance computed  for point at id (shape and pose) $id  = ${cov(0, 0)}, ${cov(1, 1)}, ${cov(2, 2)}"
         )

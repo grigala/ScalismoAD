@@ -27,27 +27,6 @@ object Evaluators {
         }
     }
 
-    case class SimpleCorrespondenceEvaluator(model: PointDistributionModel[_3D, TriangleMesh],
-                                             correspondences: Seq[(PointId, Point[_3D], MultivariateNormalDistribution)])
-        extends DistributionEvaluator[SampleLF] {
-
-        override def logValue(sample: SampleLF): Double = {
-
-            val currModelInstance = model.instance(sample.parameters.modelCoefficients).transform(sample.poseTransformation)
-
-            val likelihoods = correspondences.map(correspondence => {
-                val (id, targetPoint, uncertainty) = correspondence
-                val modelInstancePoint = currModelInstance.pointSet.point(id)
-                val observedDeformation = targetPoint - modelInstancePoint
-
-                uncertainty.logpdf(observedDeformation.toBreezeVector)
-            })
-
-            val loglikelihood = likelihoods.sum
-            loglikelihood
-        }
-    }
-
     case class CorrespondenceEvaluator(model: PointDistributionModel[_3D, TriangleMesh],
                                        correspondences: Seq[(PointId, Point[_3D], MultivariateNormalDistribution)])
         extends DistributionEvaluator[SampleLF] {

@@ -1,6 +1,6 @@
 package ch.grigala.scalismoad.example.fitting
 
-import ch.grigala.scalismoad.example.fitting.LandmarkFitting.samples
+import ch.grigala.scalismoad.example.fitting.Data.SampleLF
 import scalismo.common.{PointId, UnstructuredPointsDomain}
 import scalismo.geometry.{EuclideanVector, Point, SquareMatrix, _3D}
 import scalismo.mesh.TriangleMesh
@@ -9,7 +9,8 @@ import scalismo.statisticalmodel.{MultivariateNormalDistribution, PointDistribut
 object Utils {
 
     def marginalizeModelForCorrespondences(model: PointDistributionModel[_3D, TriangleMesh],
-                                           correspondences: Seq[(PointId, Point[_3D], MultivariateNormalDistribution)])
+                                           correspondences: Seq[(PointId, Point[_3D],
+                                               MultivariateNormalDistribution)])
     : (PointDistributionModel[_3D, UnstructuredPointsDomain],
         Seq[(PointId, Point[_3D], MultivariateNormalDistribution)]) = {
 
@@ -24,7 +25,7 @@ object Utils {
         (marginalizedModel, newCorrespondences)
     }
 
-    def computeMean(model: PointDistributionModel[_3D, UnstructuredPointsDomain], id: PointId): Point[_3D] = {
+    def computeMean(model: PointDistributionModel[_3D, UnstructuredPointsDomain], id: PointId, samples: IndexedSeq[SampleLF]): Point[_3D] = {
         var mean = EuclideanVector(0, 0, 0)
         for (sample <- samples) yield {
             val modelInstance = model.instance(sample.parameters.modelCoefficients)
@@ -36,7 +37,8 @@ object Utils {
 
     def computeCovarianceFromSampleLFs(model: PointDistributionModel[_3D, UnstructuredPointsDomain],
                                        id: PointId,
-                                       mean: Point[_3D]): SquareMatrix[_3D] = {
+                                       mean: Point[_3D],
+                                       samples: IndexedSeq[SampleLF]): SquareMatrix[_3D] = {
         var cov = SquareMatrix.zeros[_3D]
         for (sample <- samples) yield {
             val modelInstance = model.instance(sample.parameters.modelCoefficients)

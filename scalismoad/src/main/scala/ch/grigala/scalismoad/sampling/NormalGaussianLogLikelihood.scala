@@ -1,6 +1,5 @@
 package ch.grigala.scalismoad.sampling
 
-import breeze.numerics.constants.Pi
 import ch.grigala.scalismoad.data.Sample
 import ch.grigala.scalismoad.graph._
 import ch.grigala.scalismoad.rule.ScalarRule.Implicits._
@@ -10,9 +9,7 @@ case class NormalGaussianLogLikelihood(theta: Sample, data: Seq[(Double, Double)
     private val a: Var[Scalar, Double] = Var(theta.parameters.a)
     private val b: Var[Scalar, Double] = Var(theta.parameters.b)
     private val sig: Var[Scalar, Double] = Var(theta.parameters.sigma2)
-    private val pi: Var[Scalar, Double] = Var(Pi)
-    private val den: Var[Scalar, Double] = Var(2.0)
-    private val logNormalizer: Node[Scalar, Double] = 0.5 * log(sqrt(2.0 * pi)) + log(sig)
+    private val logNormalizer: Node[Scalar, Double] = 0.5 * log(sqrt(2.0 * scala.math.Pi)) + log(sig)
     private var computational_graph: Node[Scalar, Double] = Var(0.0)
 
     private lazy val calculateGradient = computational_graph.grad()

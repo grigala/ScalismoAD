@@ -138,7 +138,7 @@ class tanh[U[_], T](v: Node[U, T])(implicit vr: MathRule[U, T]) extends UnaryOp[
 }
 
 class log[U[_], T](v: Node[U, T])(implicit r: MathRule[U, T]) extends UnaryOp[U, T] {
-    override def toString: String = s"ln(${v})"
+    override def toString: String = s"log(${v})"
 
     override def apply(): Value[U, T] = log(v())
 

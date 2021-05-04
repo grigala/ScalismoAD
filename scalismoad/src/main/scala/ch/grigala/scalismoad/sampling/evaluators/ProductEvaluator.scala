@@ -50,7 +50,7 @@ class ProductEvaluatorWithGradient[A](evaluators: Seq[DistributionEvaluator[A] w
 }
 
 object ProductEvaluator {
-    def apply[A](evaluators: DistributionEvaluator[A]*) = new ProductEvaluator[A](evaluators.toSeq) // TODO type missmatch
+    def apply[A](evaluators: DistributionEvaluator[A]*) = new ProductEvaluator[A](evaluators.toSeq)
 
     def apply[A](builder: implicits.ProductBuilder[A]) = builder.toProductEvaluator
 
@@ -73,7 +73,7 @@ object ProductEvaluator {
         implicit def toProductEvaluator[A](builder: ProductBuilder[A]): ProductEvaluator[A] = builder.toProductEvaluator
 
         class ProductBuilder[A](evals: DistributionEvaluator[A]*) {
-            def toProductEvaluator: ProductEvaluator[A] = new ProductEvaluator[A](evals.toSeq) // TODO type missmatch
+            def toProductEvaluator: ProductEvaluator[A] = new ProductEvaluator[A](evals.toSeq)
 
             def *(other: DistributionEvaluator[A]): ProductBuilder[A] = new ProductBuilder[A](evals :+ other: _*)
         }

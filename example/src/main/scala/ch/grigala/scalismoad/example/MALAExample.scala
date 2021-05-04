@@ -52,8 +52,8 @@ case class MALALikelihoodEvaluator(data: Seq[Double])
 
     //    f(x, mu, sigma) = log(Normal(x|mu, sigma)
     override def logValue(theta: MALASample): Double = {
-        val notmalLogDensity = NormalGaussianLogLikelihood(theta, data)
-        notmalLogDensity.value
+        val g = NormalGaussianLogLikelihood(theta, data)
+        g.value
     }
 
     override def gradient(theta: MALASample): MALASample = {
@@ -62,9 +62,7 @@ case class MALALikelihoodEvaluator(data: Seq[Double])
         val params = theta.parameters.copy(mu = g.gradients._1, sigma = g.gradients._2)
         theta.copy(parameters = params)
     }
-
 }
-
 case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     private val mu = Var(theta.parameters.mu)
     private val sigma = Var(theta.parameters.sigma)
@@ -133,7 +131,7 @@ object MALAExample {
         val data = generateSyntheticData(100)
 
         // We use the new method  withGradient of the productEvaluator to combine evaluators that have gradients
-        val posteriorEvaluator = ProductEvaluator.withGradient(MALAPriorEvaluator, MALALikelihoodEvaluator(data))
+        val posteriorEvaluator = ProductEvaluator.withGradient[MALASample](MALAPriorEvaluator, MALALikelihoodEvaluator(data))
 
         // Using the new Mala proposal as a gradient
         val generator = MalaProposal(posteriorEvaluator, 1e-3, AllParamLens)
@@ -143,7 +141,7 @@ object MALAExample {
         val chain = MetropolisHastings(generator, posteriorEvaluator)
 
         val initialSample = MALASample(MALAParameters(0, 1), generatedBy = "initial")
-        val malaLogger = new MalaLogger()
+        val malaLogger = MalaLogger()
         val mhIterator = chain.iterator(initialSample, malaLogger)
         val samples = mhIterator.drop(1000).take(10000).toIndexedSeq
 
@@ -176,7 +174,7 @@ case class MalaLogger() extends AcceptRejectLogger[MALASample] {
                        ): Unit = {
         val numRejectedSoFar = numRejected.getOrElseUpdate(sample.generatedBy, 0)
         numRejected.update(sample.generatedBy, numRejectedSoFar + 1)
-        //        verbosePrintLogger.reject(current, sample, generator, evaluator)
+        verbosePrintLogger.reject(current, sample, generator, evaluator)
     }
 
 

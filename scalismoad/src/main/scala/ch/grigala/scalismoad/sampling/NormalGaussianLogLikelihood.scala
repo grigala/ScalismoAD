@@ -30,10 +30,10 @@ case class NormalGaussianLogLikelihood(theta: Sample, data: Seq[(Double, Double)
 
     def gradients: (Double, Double, Double) = {
         calculateGradient
-        val `∂f∕∂a` = a.gradient.unwrap.data.asInstanceOf[Double]
-        val `∂f∕∂b` = b.gradient.unwrap.data.asInstanceOf[Double]
-        val `∂f∕∂sig` = sig.gradient.unwrap.data.asInstanceOf[Double]
-        (`∂f∕∂a`, `∂f∕∂b`, `∂f∕∂sig`)
+        val dfda = a.gradient.unwrap.data.asInstanceOf[Double]
+        val dfdb = b.gradient.unwrap.data.asInstanceOf[Double]
+        val dfdsig = sig.gradient.unwrap.data.asInstanceOf[Double]
+        (dfda, dfdb, dfdsig)
     }
 
     def fullGradient: Double = {

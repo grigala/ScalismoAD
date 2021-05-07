@@ -6,6 +6,7 @@ import scalismo.geometry.{EuclideanVector, Point, SquareMatrix, _3D}
 import scalismo.mesh.TriangleMesh
 import scalismo.statisticalmodel.{MultivariateNormalDistribution, PointDistributionModel}
 
+
 object Utils {
 
     def marginalizeModelForCorrespondences(model: PointDistributionModel[_3D, TriangleMesh],
@@ -48,4 +49,6 @@ object Utils {
         }
         cov * (1.0 / samples.size)
     }
+
+
 }

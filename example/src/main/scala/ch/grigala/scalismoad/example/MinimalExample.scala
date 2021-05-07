@@ -121,7 +121,6 @@ object MinimalExample {
         // From here on, the rest ist standard MH sampling
 
         val chain = MetropolisHastings(generator, posteriorEvaluator)
-
         val initialSample = Sample(Parameters(0, 1), generatedBy = "initial")
         val mhIterator = chain.iterator(initialSample)
         val samples = mhIterator.drop(1000).take(10000).toIndexedSeq

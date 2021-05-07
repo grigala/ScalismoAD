@@ -20,12 +20,12 @@ object Application {
         //        val z = y * sin(x) + pow(y, 2)
         val z = x * (Neg(sin(x * y)) + y) * 4
 
-        println(s"Value=${z.apply().unwrap.data}")
-        println(s"∂z∕∂x=${z.deriv(x).unwrap.data}")
-        println(s"∂z∕∂y=${z.deriv(y).unwrap.data}")
+        println(s"Value=${z.apply()}")
+        println(s"∂z∕∂x=${z.deriv(x)}")
+        println(s"∂z∕∂y=${z.deriv(y)}")
         z.grad()
 
-        println(s"∇z={${x.gradient.unwrap.data}, ${y.gradient.unwrap.data}}")
+        println(s"∇z={${x.gradient}, ${y.gradient}}")
 
     }
 

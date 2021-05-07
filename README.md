@@ -32,4 +32,5 @@ until [commit#652ea8e](https://github.com/grigala/ScalismoAD/commit/652ea8e95507
 ### Scalismo Tutorials
 
 - [1D Bayesian Linear Regression](https://scalismo.org/docs/tutorials/tutorial14)
+- [Landmark Fitting](https://scalismo.org/docs/tutorials/tutorial15)
 - [MALA Proposal Draft](https://github.com/unibas-gravis/scalismo/pull/361)

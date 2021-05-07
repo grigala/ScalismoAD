@@ -1,6 +1,7 @@
 package ch.grigala.scalismoad.example
 
 import breeze.linalg.DenseVector
+import ch.grigala.scalismoad.Utils.~=
 import ch.grigala.scalismoad.graph._
 import ch.grigala.scalismoad.logging.VerbosePrintLogger
 import ch.grigala.scalismoad.rule.ScalarRule.Implicits._
@@ -52,7 +53,19 @@ case class MALALikelihoodEvaluator(data: Seq[Double])
 
     //    f(x, mu, sigma) = log(Normal(x|mu, sigma)
     override def logValue(theta: MALASample): Double = {
+        // typical implementaton just to check for correctness
+        val likelihood = breeze.stats.distributions.Gaussian(
+            theta.parameters.mu,
+            theta.parameters.sigma
+        )
+        val likelihoods = for (x <- data) yield {
+            likelihood.logPdf(x)
+        }
+
         val g = NormalGaussianLogLikelihood(theta, data)
+        // make sure values match
+        //        assert(g.value == likelihoods.sum, s"was ${g.value}, expected ${likelihoods.sum}")
+        ~=(g.value, likelihoods.sum, 1e-10)
         g.value
     }
 
@@ -63,14 +76,15 @@ case class MALALikelihoodEvaluator(data: Seq[Double])
         theta.copy(parameters = params)
     }
 }
+
 case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     private val mu = Var(theta.parameters.mu)
     private val sigma = Var(theta.parameters.sigma)
-    private val logNormalizer = 0.5 * log(sqrt(2.0 * scala.math.Pi)) + log(sigma)
+    private val logNormalizer = log(sqrt(2.0 * scala.math.Pi)) + log(sigma)
     private var compGraph: Node[Scalar, Double] = Var(0.0)
 
     for (x <- data) yield {
-        val f = 0.5 * Neg(pow(x - mu, 2) / sigma) - logNormalizer
+        val f = Neg(0.5 * pow(x - mu, 2) / (sigma * sigma)) - logNormalizer
         compGraph = compGraph + f
     }
 
@@ -100,7 +114,19 @@ object MALAPriorEvaluator
     val priorDistSigma = breeze.stats.distributions.Gaussian(0, 20)
 
     override def logValue(theta: MALASample): Double = {
-        priorDistMu.logPdf(theta.parameters.mu) + priorDistSigma.logPdf(theta.parameters.sigma)
+        val priorDistParams = MALAParameters(mu = 0, sigma = 10)
+        val priorDistParams1 = MALAParameters(mu = 0, sigma = 20)
+
+        val priorSample = theta.copy(parameters = priorDistParams)
+        val priorSample1 = theta.copy(parameters = priorDistParams1)
+
+        val g1 = NormalGaussianLogLikelihood(priorSample, Seq(theta.parameters.mu))
+        val g2 = NormalGaussianLogLikelihood(priorSample1, Seq(theta.parameters.sigma))
+
+        val value = g1.value + g2.value
+        val calc = priorDistMu.logPdf(theta.parameters.mu) + priorDistSigma.logPdf(theta.parameters.sigma)
+        ~=(value, calc, 1e-10)
+        value
     }
 
     override def gradient(sample: MALASample): MALASample = {
@@ -108,6 +134,7 @@ object MALAPriorEvaluator
         val gradSigma = -(sample.parameters.sigma - priorDistSigma.mean) / priorDistSigma.variance
         sample.copy(parameters = sample.parameters.copy(mu = gradMu, sigma = gradSigma))
     }
+
 }
 
 object MALAExample {
@@ -142,7 +169,7 @@ object MALAExample {
 
         val initialSample = MALASample(MALAParameters(0, 1), generatedBy = "initial")
         val malaLogger = MalaLogger()
-        val mhIterator = chain.iterator(initialSample, malaLogger)
+        val mhIterator = chain.iterator(initialSample)
         val samples = mhIterator.drop(1000).take(10000).toIndexedSeq
 
         val estimatedMean = samples.map(sample => sample.parameters.mu).sum / samples.size

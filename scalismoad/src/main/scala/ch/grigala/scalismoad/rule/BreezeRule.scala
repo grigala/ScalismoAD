@@ -16,11 +16,11 @@ object BreezeRule {
 
         override def zeroM: D = 0.0
 
-        override def zeroS(shape: DV): DV = DenseVector.zeros[D](shape.data.size)
+        override def zeroS(shape: DV): DV = DenseVector.zeros[D](shape.data.length)
 
         override def oneM: D = 1.0
 
-        override def oneS(shape: DV): DV = DenseVector.ones[D](shape.data.size)
+        override def oneS(shape: DV): DV = DenseVector.ones[D](shape.data.length)
 
         override def addSS(l: DV, r: DV): DV = l + r
 

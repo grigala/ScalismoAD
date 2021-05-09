@@ -3,7 +3,7 @@ package ch.grigala.scalismoad.example.fitting
 import ch.grigala.scalismoad.Utils.~=
 import ch.grigala.scalismoad.example.fitting.Data.SampleLF
 import ch.grigala.scalismoad.example.fitting.Utils.marginalizeModelForCorrespondences
-import ch.grigala.scalismoad.stats.{MultivariateGaussianLogLikelihoodWGradient, UnivariateGaussianLogLikelihoodWGradient}
+import ch.grigala.scalismoad.stats.{MultivariateNormalLogLikelihoodWGradient, UnivariateNormalLogLikelihoodWGradient}
 import scalismo.common.PointId
 import scalismo.geometry.{Point, _3D}
 import scalismo.mesh.TriangleMesh
@@ -22,12 +22,12 @@ object Evaluators {
 
         override def logValue(sample: SampleLF): Double = {
             // Translation prior logpdf for each parameter
-            val tpSum = UnivariateGaussianLogLikelihoodWGradient(0.0, 5.0, sample.parameters.translationParametersLF.toArray)
+            val tpSum = UnivariateNormalLogLikelihoodWGradient(0.0, 5.0, sample.parameters.translationParametersLF.toArray)
             // Rotation prior logpdf for each parameter
-            val rpSum = UnivariateGaussianLogLikelihoodWGradient(0.0, 0.1, sample.parameters.rotationParametersLF.toArray)
+            val rpSum = UnivariateNormalLogLikelihoodWGradient(0.0, 0.1, sample.parameters.rotationParametersLF.toArray)
 
             // model coefficients logpdf
-            val modelCoeffSum = MultivariateGaussianLogLikelihoodWGradient(model, sample.parameters.modelCoefficients)
+            val modelCoeffSum = MultivariateNormalLogLikelihoodWGradient(model, sample.parameters.modelCoefficients)
 
             // Just for testing
             val testTranslationSum = translationPrior.logPdf(sample.parameters.translationParametersLF.x) +
@@ -63,7 +63,6 @@ object Evaluators {
                 val (id, targetPoint, uncertainty) = correspondence
                 val modelInstancePoint = currModelInstance.pointSet.point(id)
                 val observedDeformation = targetPoint - modelInstancePoint
-
                 uncertainty.logpdf(observedDeformation.toBreezeVector)
             })
 

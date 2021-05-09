@@ -12,14 +12,14 @@ import scalismo.sampling.algorithms.MetropolisHastings
 import scalismo.sampling.evaluators.ProductEvaluator
 import scalismo.sampling.proposals.MixtureProposal
 import scalismo.statisticalmodel.MultivariateNormalDistribution
-import scalismo.ui.api.ScalismoUI
+import scalismo.ui.api.ScalismoUIHeadless
 import scalismo.utils.Random.implicits._
 
 object LandmarkFitting extends App {
 
     scalismo.initialize()
 
-    val ui = ScalismoUI()
+    val ui = ScalismoUIHeadless()
 
     val model = StatisticalModelIO.readStatisticalTriangleMeshModel3D(new java.io.File("datasets/bfm.h5")).get
 

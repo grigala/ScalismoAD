@@ -11,7 +11,7 @@ import ch.grigala.scalismoad.rule.ScalarRule.Implicits._
  * @param sigma variance of the gaussian
  * @param data  point(s) at which pdf is evaluated
  */
-case class UnivariateGaussianLogLikelihoodWGradient(mu: Double, sigma: Double, data: Seq[Double]) {
+case class UnivariateNormalLogLikelihoodWGradient(mu: Double, sigma: Double, data: Seq[Double]) {
     private val mean = Var(mu)
     private val variance = Var(sigma)
     private val logNormalizer = log(sqrt(2.0 * scala.math.Pi)) + log(sigma)

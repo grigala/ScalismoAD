@@ -70,5 +70,3 @@ trait MathRule[U[_], T] extends ValueRule[U, T] {
 
     def dotMM(v: T, p: T): T
 }
-
-

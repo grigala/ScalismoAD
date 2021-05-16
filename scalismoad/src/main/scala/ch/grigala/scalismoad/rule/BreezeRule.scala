@@ -13,50 +13,32 @@ object BreezeRule {
     type DM = DenseMatrix[D]
 
     trait DenseVectorValueRule extends ValueRule[DenseVector, D] {
-        //        def adjustSize(left: DV, right: DV): (DV, DV) = {
-        //            var ll = left
-        //            var rr = right
-        //
-        //            if (left.size < right.size) {
-        //                ll = DenseVector.zeros[Double](right.size)
-        //                ll(0, left.size) := left
-        //            } else if (left.size > right.size) {
-        //                rr = DenseVector.zeros[Double](left.size)
-        //                rr(0, right.size) := right
-        //            }
-        //            (ll, rr)
-        //        }
 
         override def zeroM: D = 0.0
 
-        override def zeroC(shape: DV): DV = DenseVector.zeros[D](shape.data.length)
+        override def zeroS(shape: DV): DV = DenseVector.zeros[D](shape.data.length)
 
         override def oneM: D = 1.0
 
-        override def oneC(shape: DV): DV = DenseVector.ones[D](shape.data.length)
+        override def oneS(shape: DV): DV = DenseVector.ones[D](shape.data.length)
 
-        override def addCC(l: DV, r: DV): DV = l + r
+        override def addSS(l: DV, r: DV): DV = l + r
 
-        override def mulCC(l: DV, r: DV): DV = {
-            //            val (ll, rr) = adjustSize(l, r)
-            //            println(ll)
-            //            println(rr)
-            l *:* r
-        }
+        override def mulSS(l: DV, r: DV): DV = l *:* r
 
-        override def divCC(l: DV, r: DV): DV = l /:/ r
+        override def divSS(l: DV, r: DV): DV = l /:/ r
 
-        override def addCM(l: DV, r: D): DV = l + r
+        override def addSM(l: DV, r: D): DV = l + r
 
-        override def mulCM(l: DV, r: D): DV = l * r
+        override def mulSM(l: DV, r: D): DV = l * r
 
-        override def divCM(l: DV, r: D): DV = l / r
+        override def divSM(l: DV, r: D): DV = l / r
 
-        override def addMC(l: D, r: DV): DV = r + l
+        override def addMS(l: D, r: DV): DV = r + l
 
-        override def mulMC(l: D, r: DV): DV = r *:* l
+        override def mulMS(l: D, r: DV): DV = r *:* l
 
-        override def divMC(l: D, r: DV): DV = r.map(l / _)
+        override def divMS(l: D, r: DV): DV = r.map(l / _)
 
         override def addMM(l: D, r: D): D = l + r
 
@@ -64,35 +46,35 @@ object BreezeRule {
 
         override def divMM(l: D, r: D): D = l / r
 
-        override def ltCC(l: DV, r: DV): DenseVector[Boolean] = (l <:< r).map(b => b)
+        override def ltSS(l: DV, r: DV): DenseVector[Boolean] = (l <:< r).map(b => b)
 
-        override def lteCC(l: DV, r: DV): DenseVector[Boolean] = (l <:= r).map(b => b)
+        override def lteSS(l: DV, r: DV): DenseVector[Boolean] = (l <:= r).map(b => b)
 
-        override def gtCC(l: DV, r: DV): DenseVector[Boolean] = (l >:> r).map(b => b)
+        override def gtSS(l: DV, r: DV): DenseVector[Boolean] = (l >:> r).map(b => b)
 
-        override def gteCC(l: DV, r: DV): DenseVector[Boolean] = (l >:= r).map(b => b)
+        override def gteSS(l: DV, r: DV): DenseVector[Boolean] = (l >:= r).map(b => b)
 
-        override def eqCC(l: DV, r: DV): DenseVector[Boolean] = (l :== r).map(b => b)
+        override def eqSS(l: DV, r: DV): DenseVector[Boolean] = (l :== r).map(b => b)
 
-        override def ltCM(l: DV, r: D): DenseVector[Boolean] = l.map(_ < r)
+        override def ltSM(l: DV, r: D): DenseVector[Boolean] = l.map(_ < r)
 
-        override def lteCM(l: DV, r: D): DenseVector[Boolean] = l.map(_ <= r)
+        override def lteSM(l: DV, r: D): DenseVector[Boolean] = l.map(_ <= r)
 
-        override def gtCM(l: DV, r: D): DenseVector[Boolean] = l.map(_ > r)
+        override def gtSM(l: DV, r: D): DenseVector[Boolean] = l.map(_ > r)
 
-        override def gteCM(l: DV, r: D): DenseVector[Boolean] = l.map(_ >= r)
+        override def gteSM(l: DV, r: D): DenseVector[Boolean] = l.map(_ >= r)
 
-        override def eqCM(l: DV, r: D): DenseVector[Boolean] = l.map(_ == r)
+        override def eqSM(l: DV, r: D): DenseVector[Boolean] = l.map(_ == r)
 
-        override def ltMC(l: D, r: DV): DenseVector[Boolean] = r.map(l < _)
+        override def ltMS(l: D, r: DV): DenseVector[Boolean] = r.map(l < _)
 
-        override def lteMC(l: D, r: DV): DenseVector[Boolean] = r.map(l <= _)
+        override def lteMS(l: D, r: DV): DenseVector[Boolean] = r.map(l <= _)
 
-        override def gtMC(l: D, r: DV): DenseVector[Boolean] = r.map(l > _)
+        override def gtMS(l: D, r: DV): DenseVector[Boolean] = r.map(l > _)
 
-        override def gteMC(l: D, r: DV): DenseVector[Boolean] = r.map(l >= _)
+        override def gteMS(l: D, r: DV): DenseVector[Boolean] = r.map(l >= _)
 
-        override def eqMC(l: D, r: DV): DenseVector[Boolean] = r.map(l == _)
+        override def eqMS(l: D, r: DV): DenseVector[Boolean] = r.map(l == _)
 
         override def ltMM(l: D, r: D): Boolean = l < r
 
@@ -104,35 +86,35 @@ object BreezeRule {
 
         override def eqMM(l: D, r: D): Boolean = l == r
 
-        override def posC(v: DV): DV = v
+        override def posS(v: DV): DV = v
 
-        override def negC(v: DV): DV = -v
+        override def negS(v: DV): DV = -v
 
         override def posM(v: D): D = v
 
         override def negM(v: D): D = -v
 
-        override def transposeC(v: DV): DV = v
+        override def transposeS(v: DV): DV = v
 
         override def transposeM(v: D): D = v
 
-        override def closeCC(l: DV, r: DV, eps: D = 1e-4): DenseVector[Boolean] = {
-            (breeze.numerics.abs(subCC(l, r)) >:= eps).map(b => b)
+        override def closeSS(l: DV, r: DV, eps: D = 1e-4): DenseVector[Boolean] = {
+            (breeze.numerics.abs(subSS(l, r)) >:= eps).map(b => b)
         }
 
-        override def subCC(l: DV, r: DV): DV = l - r
+        override def subSS(l: DV, r: DV): DV = l - r
 
-        override def closeCM(l: DV, r: D, eps: D = 1e-4): DenseVector[Boolean] = {
-            (breeze.numerics.abs(subCM(l, r)) >:= eps).map(b => b)
+        override def closeSM(l: DV, r: D, eps: D = 1e-4): DenseVector[Boolean] = {
+            (breeze.numerics.abs(subSM(l, r)) >:= eps).map(b => b)
         }
 
-        override def subCM(l: DV, r: D): DV = l - r
+        override def subSM(l: DV, r: D): DV = l - r
 
-        override def closeMC(l: D, r: DV, eps: D = 1e-4): DenseVector[Boolean] = {
-            (breeze.numerics.abs(subMC(l, r)) >:= eps).map(b => b)
+        override def closeMS(l: D, r: DV, eps: D = 1e-4): DenseVector[Boolean] = {
+            (breeze.numerics.abs(subMS(l, r)) >:= eps).map(b => b)
         }
 
-        override def subMC(l: D, r: DV): DV = r.map(l - _)
+        override def subMS(l: D, r: DV): DV = r.map(l - _)
 
         override def closeMM(l: D, r: D, eps: D = 1e-4): Boolean = {
             breeze.numerics.abs(subMM(l, r)) <= eps
@@ -140,19 +122,19 @@ object BreezeRule {
 
         override def subMM(l: D, r: D): D = l - r
 
-        override def whereCCC(cond: DenseVector[Boolean], a: DV, b: DV): DV = breeze.linalg.where(cond, a, b)
+        override def whereSSS(cond: DenseVector[Boolean], a: DV, b: DV): DV = breeze.linalg.where(cond, a, b)
 
-        override def whereCCM(cond: DenseVector[Boolean], a: DV, b: D): DV = breeze.linalg.where(cond, a, fillLike(b, cond))
+        override def whereSSM(cond: DenseVector[Boolean], a: DV, b: D): DV = breeze.linalg.where(cond, a, fillLike(b, cond))
 
-        override def whereCMC(cond: DenseVector[Boolean], a: D, b: DV): DV = breeze.linalg.where(cond, fillLike(a, cond), b)
+        override def whereSMS(cond: DenseVector[Boolean], a: D, b: DV): DV = breeze.linalg.where(cond, fillLike(a, cond), b)
 
-        override def whereCMM(cond: DenseVector[Boolean], a: D, b: D): DV = breeze.linalg.where(cond, fillLike(a, cond), fillLike(b, cond))
+        override def whereSMM(cond: DenseVector[Boolean], a: D, b: D): DV = breeze.linalg.where(cond, fillLike(a, cond), fillLike(b, cond))
 
-        override def whereMCC(cond: Boolean, a: DV, b: DV): DV = if (cond) a else b
+        override def whereMSS(cond: Boolean, a: DV, b: DV): DV = if (cond) a else b
 
-        override def whereMCM(cond: Boolean, a: DV, b: D): DV = if (cond) a else fillLike(b, a)
+        override def whereMSM(cond: Boolean, a: DV, b: D): DV = if (cond) a else fillLike(b, a)
 
-        override def whereMMC(cond: Boolean, a: D, b: DV): DV = if (cond) fillLike(a, b) else b
+        override def whereMMS(cond: Boolean, a: D, b: DV): DV = if (cond) fillLike(a, b) else b
 
         private[this] def fillLike[A](value: D, ref: DenseVector[A]): DV = DenseVector.fill(ref.length, value)
 
@@ -233,49 +215,31 @@ object BreezeRule {
 
     trait DenseMatrixValueRule extends ValueRule[DenseMatrix, D] {
 
-        def adjustSize(left: DM, right: DM): (DM, DM) = {
-            var ll = left
-            var rr = right
-
-            if (left.size < right.size) {
-                ll = DenseMatrix.zeros[Double](right.rows, right.cols)
-                ll(0, ::) := left.toDenseVector.t
-            } else if (left.size > right.size) {
-                rr = DenseMatrix.zeros(left.rows, left.cols)
-                rr(0, ::) := right.toDenseVector.t
-            }
-            (ll, rr)
-        }
-
         override def zeroM: D = 0.0
 
-        override def zeroC(shape: DM): DM = DenseMatrix.zeros[D](shape.rows, shape.cols)
+        override def zeroS(shape: DM): DM = DenseMatrix.zeros[D](shape.rows, shape.cols)
 
         override def oneM: D = 1.0
 
-        override def oneC(shape: DM): DM = DenseMatrix.ones[D](shape.rows, shape.cols)
+        override def oneS(shape: DM): DM = DenseMatrix.ones[D](shape.rows, shape.cols)
 
-        override def addCC(l: DM, r: DM): DM = l + r
+        override def addSS(l: DM, r: DM): DM = l + r
 
-        override def mulCC(l: DM, r: DM): DM = {
-            //            val (ll, rr) = adjustSize(l, r)
-            //            ll *:* rr
-            l *:* r
-        }
+        override def mulSS(l: DM, r: DM): DM = l *:* r
 
-        override def divCC(l: DM, r: DM): DM = l /:/ r
+        override def divSS(l: DM, r: DM): DM = l /:/ r
 
-        override def addCM(l: DM, r: D): DM = l + r
+        override def addSM(l: DM, r: D): DM = l + r
 
-        override def mulCM(l: DM, r: D): DM = l * r
+        override def mulSM(l: DM, r: D): DM = l * r
 
-        override def divCM(l: DM, r: D): DM = l / r
+        override def divSM(l: DM, r: D): DM = l / r
 
-        override def addMC(l: D, r: DM): DM = r + l
+        override def addMS(l: D, r: DM): DM = r + l
 
-        override def mulMC(l: D, r: DM): DM = r *:* l
+        override def mulMS(l: D, r: DM): DM = r *:* l
 
-        override def divMC(l: D, r: DM): DM = r.map(l / _)
+        override def divMS(l: D, r: DM): DM = r.map(l / _)
 
         override def addMM(l: D, r: D): D = l + r
 
@@ -283,35 +247,35 @@ object BreezeRule {
 
         override def divMM(l: D, r: D): D = l / r
 
-        override def ltCC(l: DM, r: DM): DenseMatrix[Boolean] = l <:< r
+        override def ltSS(l: DM, r: DM): DenseMatrix[Boolean] = l <:< r
 
-        override def lteCC(l: DM, r: DM): DenseMatrix[Boolean] = l <:= r
+        override def lteSS(l: DM, r: DM): DenseMatrix[Boolean] = l <:= r
 
-        override def gtCC(l: DM, r: DM): DenseMatrix[Boolean] = l >:> r
+        override def gtSS(l: DM, r: DM): DenseMatrix[Boolean] = l >:> r
 
-        override def gteCC(l: DM, r: DM): DenseMatrix[Boolean] = l >:= r
+        override def gteSS(l: DM, r: DM): DenseMatrix[Boolean] = l >:= r
 
-        override def eqCC(l: DM, r: DM): DenseMatrix[Boolean] = l :== r
+        override def eqSS(l: DM, r: DM): DenseMatrix[Boolean] = l :== r
 
-        override def ltCM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ < r)
+        override def ltSM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ < r)
 
-        override def lteCM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ <= r)
+        override def lteSM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ <= r)
 
-        override def gtCM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ > r)
+        override def gtSM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ > r)
 
-        override def gteCM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ >= r)
+        override def gteSM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ >= r)
 
-        override def eqCM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ == r)
+        override def eqSM(l: DM, r: D): DenseMatrix[Boolean] = l.map(_ == r)
 
-        override def ltMC(l: D, r: DM): DenseMatrix[Boolean] = r.map(l < _)
+        override def ltMS(l: D, r: DM): DenseMatrix[Boolean] = r.map(l < _)
 
-        override def lteMC(l: D, r: DM): DenseMatrix[Boolean] = r.map(l <= _)
+        override def lteMS(l: D, r: DM): DenseMatrix[Boolean] = r.map(l <= _)
 
-        override def gtMC(l: D, r: DM): DenseMatrix[Boolean] = r.map(l > _)
+        override def gtMS(l: D, r: DM): DenseMatrix[Boolean] = r.map(l > _)
 
-        override def gteMC(l: D, r: DM): DenseMatrix[Boolean] = r.map(l >= _)
+        override def gteMS(l: D, r: DM): DenseMatrix[Boolean] = r.map(l >= _)
 
-        override def eqMC(l: D, r: DM): DenseMatrix[Boolean] = r.map(l == _)
+        override def eqMS(l: D, r: DM): DenseMatrix[Boolean] = r.map(l == _)
 
         override def ltMM(l: D, r: D): Boolean = l < r
 
@@ -323,35 +287,35 @@ object BreezeRule {
 
         override def eqMM(l: D, r: D): Boolean = l == r
 
-        override def posC(v: DM): DM = v
+        override def posS(v: DM): DM = v
 
-        override def negC(v: DM): DM = -v
+        override def negS(v: DM): DM = -v
 
         override def posM(v: D): D = v
 
         override def negM(v: D): D = -v
 
-        override def transposeC(v: DM): DM = v.t
+        override def transposeS(v: DM): DM = v.t
 
         override def transposeM(v: D): D = v
 
-        override def closeCC(l: DM, r: DM, eps: D = 1e-4): DenseMatrix[Boolean] = {
-            (breeze.numerics.abs(subCC(l, r)) <:= eps).map(b => b)
+        override def closeSS(l: DM, r: DM, eps: D = 1e-4): DenseMatrix[Boolean] = {
+            (breeze.numerics.abs(subSS(l, r)) <:= eps).map(b => b)
         }
 
-        override def subCC(l: DM, r: DM): DM = l - r
+        override def subSS(l: DM, r: DM): DM = l - r
 
-        override def closeCM(l: DM, r: D, eps: D = 1e-4): DenseMatrix[Boolean] = {
-            (breeze.numerics.abs(subCM(l, r)) <:= eps).map(b => b)
+        override def closeSM(l: DM, r: D, eps: D = 1e-4): DenseMatrix[Boolean] = {
+            (breeze.numerics.abs(subSM(l, r)) <:= eps).map(b => b)
         }
 
-        override def subCM(l: DM, r: D): DM = l - r
+        override def subSM(l: DM, r: D): DM = l - r
 
-        override def closeMC(l: D, r: DM, eps: D = 1e-4): DenseMatrix[Boolean] = {
-            (breeze.numerics.abs(subMC(l, r)) <:= eps).map(b => b)
+        override def closeMS(l: D, r: DM, eps: D = 1e-4): DenseMatrix[Boolean] = {
+            (breeze.numerics.abs(subMS(l, r)) <:= eps).map(b => b)
         }
 
-        override def subMC(l: D, r: DM): DM = r.map(l - _)
+        override def subMS(l: D, r: DM): DM = r.map(l - _)
 
         override def closeMM(l: D, r: D, eps: D = 1e-4): Boolean = {
             breeze.numerics.abs(subMM(l, r)) <= eps
@@ -359,21 +323,21 @@ object BreezeRule {
 
         override def subMM(l: D, r: D): D = l - r
 
-        override def whereCCC(cond: DenseMatrix[Boolean], a: DM, b: DM): DM = breeze.linalg.where(cond, a, b)
+        override def whereSSS(cond: DenseMatrix[Boolean], a: DM, b: DM): DM = breeze.linalg.where(cond, a, b)
 
-        override def whereCCM(cond: DenseMatrix[Boolean], a: DM, b: D): DM = breeze.linalg.where(cond, a, fillLike(b, cond))
+        override def whereSSM(cond: DenseMatrix[Boolean], a: DM, b: D): DM = breeze.linalg.where(cond, a, fillLike(b, cond))
 
-        override def whereCMC(cond: DenseMatrix[Boolean], a: D, b: DM): DM = breeze.linalg.where(cond, fillLike(a, cond), b)
+        override def whereSMS(cond: DenseMatrix[Boolean], a: D, b: DM): DM = breeze.linalg.where(cond, fillLike(a, cond), b)
 
         private[this] def fillLike[A](value: D, ref: DenseMatrix[A]): DM = DenseMatrix.fill(ref.rows, ref.cols)(value)
 
-        override def whereCMM(cond: DenseMatrix[Boolean], a: D, b: D): DM = breeze.linalg.where(cond, fillLike(a, cond), fillLike(b, cond))
+        override def whereSMM(cond: DenseMatrix[Boolean], a: D, b: D): DM = breeze.linalg.where(cond, fillLike(a, cond), fillLike(b, cond))
 
-        override def whereMCC(cond: Boolean, a: DM, b: DM): DM = if (cond) a else b
+        override def whereMSS(cond: Boolean, a: DM, b: DM): DM = if (cond) a else b
 
-        override def whereMCM(cond: Boolean, a: DM, b: D): DM = if (cond) a else fillLike(b, a)
+        override def whereMSM(cond: Boolean, a: DM, b: D): DM = if (cond) a else fillLike(b, a)
 
-        override def whereMMC(cond: Boolean, a: D, b: DM): DM = if (cond) fillLike(a, b) else b
+        override def whereMMS(cond: Boolean, a: D, b: DM): DM = if (cond) fillLike(a, b) else b
 
         override def whereMMM(cond: Boolean, a: D, b: D): D = if (cond) a else b
     }

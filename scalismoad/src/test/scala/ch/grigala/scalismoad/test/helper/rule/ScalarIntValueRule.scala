@@ -20,35 +20,35 @@ class ScalarIntValueRule extends ValueRule[Scalar, Int] {
 
     override def zeroM: Int = 0
 
-    override def zeroC(shape: Scalar[Int]): Scalar[Int] = Scalar(0)
+    override def zeroS(shape: Scalar[Int]): Scalar[Int] = Scalar(0)
 
     override def oneM: Int = 1
 
-    override def oneC(shape: Scalar[Int]): Scalar[Int] = Scalar(1)
+    override def oneS(shape: Scalar[Int]): Scalar[Int] = Scalar(1)
 
-    override def addCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data + r.data)
+    override def addSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data + r.data)
 
-    override def subCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data - r.data)
+    override def subSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data - r.data)
 
-    override def mulCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data * r.data)
+    override def mulSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data * r.data)
 
-    override def divCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data / r.data)
+    override def divSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Int] = Scalar(l.data / r.data)
 
-    override def addCM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data + r)
+    override def addSM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data + r)
 
-    override def subCM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data - r)
+    override def subSM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data - r)
 
-    override def mulCM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data * r)
+    override def mulSM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data * r)
 
-    override def divCM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data / r)
+    override def divSM(l: Scalar[Int], r: Int): Scalar[Int] = Scalar(l.data / r)
 
-    override def addMC(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l + r.data)
+    override def addMS(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l + r.data)
 
-    override def subMC(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l - r.data)
+    override def subMS(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l - r.data)
 
-    override def mulMC(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l * r.data)
+    override def mulMS(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l * r.data)
 
-    override def divMC(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l / r.data)
+    override def divMS(l: Int, r: Scalar[Int]): Scalar[Int] = Scalar(l / r.data)
 
     override def addMM(l: Int, r: Int): Int = l + r
 
@@ -58,35 +58,35 @@ class ScalarIntValueRule extends ValueRule[Scalar, Int] {
 
     override def divMM(l: Int, r: Int): Int = l / r
 
-    override def ltCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data < r.data)
+    override def ltSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data < r.data)
 
-    override def lteCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data <= r.data)
+    override def lteSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data <= r.data)
 
-    override def gtCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data > r.data)
+    override def gtSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data > r.data)
 
-    override def gteCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data >= r.data)
+    override def gteSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data >= r.data)
 
-    override def eqCC(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data == r.data)
+    override def eqSS(l: Scalar[Int], r: Scalar[Int]): Scalar[Boolean] = Scalar(l.data == r.data)
 
-    override def ltCM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data < r)
+    override def ltSM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data < r)
 
-    override def lteCM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data <= r)
+    override def lteSM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data <= r)
 
-    override def gtCM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data > r)
+    override def gtSM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data > r)
 
-    override def gteCM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data >= r)
+    override def gteSM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data >= r)
 
-    override def eqCM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data == r)
+    override def eqSM(l: Scalar[Int], r: Int): Scalar[Boolean] = Scalar(l.data == r)
 
-    override def ltMC(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
+    override def ltMS(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
 
-    override def lteMC(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
+    override def lteMS(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
 
-    override def gtMC(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
+    override def gtMS(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
 
-    override def gteMC(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
+    override def gteMS(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
 
-    override def eqMC(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
+    override def eqMS(l: Int, r: Scalar[Int]): Scalar[Boolean] = Scalar(l < r.data)
 
     override def ltMM(l: Int, r: Int): Boolean = l < r
 
@@ -98,27 +98,27 @@ class ScalarIntValueRule extends ValueRule[Scalar, Int] {
 
     override def eqMM(l: Int, r: Int): Boolean = l == r
 
-    override def posC(v: Scalar[Int]): Scalar[Int] = Scalar(+v.data)
+    override def posS(v: Scalar[Int]): Scalar[Int] = Scalar(+v.data)
 
-    override def negC(v: Scalar[Int]): Scalar[Int] = Scalar(-v.data)
+    override def negS(v: Scalar[Int]): Scalar[Int] = Scalar(-v.data)
 
     override def posM(v: Int): Int = +v
 
     override def negM(v: Int): Int = -v
 
-    override def transposeC(v: Scalar[Int]): Scalar[Int] = v
+    override def transposeS(v: Scalar[Int]): Scalar[Int] = v
 
     override def transposeM(v: Int): Int = v
 
-    override def closeCC(l: Scalar[Int], r: Scalar[Int], eps: Int = 0): Scalar[Boolean] = {
+    override def closeSS(l: Scalar[Int], r: Scalar[Int], eps: Int = 0): Scalar[Boolean] = {
         Scalar(l.data == r.data)
     }
 
-    override def closeCM(l: Scalar[Int], r: Int, eps: Int = 0): Scalar[Boolean] = {
+    override def closeSM(l: Scalar[Int], r: Int, eps: Int = 0): Scalar[Boolean] = {
         Scalar(l.data == r)
     }
 
-    override def closeMC(l: Int, r: Scalar[Int], eps: Int = 0): Scalar[Boolean] = {
+    override def closeMS(l: Int, r: Scalar[Int], eps: Int = 0): Scalar[Boolean] = {
         Scalar(l == r.data)
     }
 
@@ -126,19 +126,19 @@ class ScalarIntValueRule extends ValueRule[Scalar, Int] {
         l == r
     }
 
-    override def whereCCC(cond: Scalar[Boolean], a: Scalar[Int], b: Scalar[Int]): Scalar[Int] = if (cond.data) a else b
+    override def whereSSS(cond: Scalar[Boolean], a: Scalar[Int], b: Scalar[Int]): Scalar[Int] = if (cond.data) a else b
 
-    override def whereCCM(cond: Scalar[Boolean], a: Scalar[Int], b: Int): Scalar[Int] = if (cond.data) a else Scalar(b)
+    override def whereSSM(cond: Scalar[Boolean], a: Scalar[Int], b: Int): Scalar[Int] = if (cond.data) a else Scalar(b)
 
-    override def whereCMC(cond: Scalar[Boolean], a: Int, b: Scalar[Int]): Scalar[Int] = if (cond.data) Scalar(a) else b
+    override def whereSMS(cond: Scalar[Boolean], a: Int, b: Scalar[Int]): Scalar[Int] = if (cond.data) Scalar(a) else b
 
-    override def whereCMM(cond: Scalar[Boolean], a: Int, b: Int): Scalar[Int] = if (cond.data) Scalar(a) else Scalar(b)
+    override def whereSMM(cond: Scalar[Boolean], a: Int, b: Int): Scalar[Int] = if (cond.data) Scalar(a) else Scalar(b)
 
-    override def whereMCC(cond: Boolean, a: Scalar[Int], b: Scalar[Int]): Scalar[Int] = if (cond) a else b
+    override def whereMSS(cond: Boolean, a: Scalar[Int], b: Scalar[Int]): Scalar[Int] = if (cond) a else b
 
-    override def whereMCM(cond: Boolean, a: Scalar[Int], b: Int): Scalar[Int] = if (cond) a else Scalar(b)
+    override def whereMSM(cond: Boolean, a: Scalar[Int], b: Int): Scalar[Int] = if (cond) a else Scalar(b)
 
-    override def whereMMC(cond: Boolean, a: Int, b: Scalar[Int]): Scalar[Int] = if (cond) Scalar(a) else b
+    override def whereMMS(cond: Boolean, a: Int, b: Scalar[Int]): Scalar[Int] = if (cond) Scalar(a) else b
 
     override def whereMMM(cond: Boolean, a: Int, b: Int): Int = if (cond) a else b
 

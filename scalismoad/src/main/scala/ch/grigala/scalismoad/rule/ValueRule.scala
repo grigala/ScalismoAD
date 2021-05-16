@@ -15,7 +15,7 @@ trait ValueRule[U[_], T] {
 
     final def toValue(v: T): Value[U, T] = NonContainerValue[U, T](v)
 
-    final def zero(shape: U[T]): Value[U, T] = toValue(zeroS(shape))
+    final def zero(shape: U[T]): Value[U, T] = toValue(zeroC(shape))
 
     final def toValue(v: U[T])(implicit e: DummyImplicit): Value[U, T] = ContainerValue[U, T](v)
 
@@ -26,46 +26,43 @@ trait ValueRule[U[_], T] {
 
     final def one(implicit d: DummyImplicit): Value[U, T] = toValue(oneM)
 
-    final def one(shape: U[T])(implicit d: DummyImplicit): Value[U, T] = toValue(oneS(shape))
+    final def one(shape: U[T])(implicit d: DummyImplicit): Value[U, T] = toValue(oneC(shape))
 
     def zeroM: T
 
-    def zeroS(shape: U[T]): U[T]
+    def zeroC(shape: U[T]): U[T]
 
     def oneM: T
 
-    def oneS(shape: U[T]): U[T]
+    def oneC(shape: U[T]): U[T]
 
-    // because of type erasure, we cannot every 'add' methods to be a same name
+    // binary ops between Container and Container, hence CC
+    def addCC(l: U[T], r: U[T]): U[T]
 
-    // binary ops for set and set (container and container)
-    // (above 'set' doesn't means Scala's type of Set)
-    def addSS(l: U[T], r: U[T]): U[T]
+    def subCC(l: U[T], r: U[T]): U[T]
 
-    def subSS(l: U[T], r: U[T]): U[T]
+    def mulCC(l: U[T], r: U[T]): U[T]
 
-    def mulSS(l: U[T], r: U[T]): U[T]
+    def divCC(l: U[T], r: U[T]): U[T]
 
-    def divSS(l: U[T], r: U[T]): U[T]
-
-    // binary ops for set and memeber (container and member)
+    // binary ops for Container and Member object i.e. Double
     // here we don't assume the commutative law for add/mul.
-    def addSM(l: U[T], r: T): U[T]
+    def addCM(l: U[T], r: T): U[T]
 
-    def subSM(l: U[T], r: T): U[T]
+    def subCM(l: U[T], r: T): U[T]
 
-    def mulSM(l: U[T], r: T): U[T]
+    def mulCM(l: U[T], r: T): U[T]
 
-    def divSM(l: U[T], r: T): U[T]
+    def divCM(l: U[T], r: T): U[T]
 
-    // binary ops for memeber and set (member and set)
-    def addMS(l: T, r: U[T]): U[T]
+    // binary ops for Member and Container
+    def addMC(l: T, r: U[T]): U[T]
 
-    def subMS(l: T, r: U[T]): U[T]
+    def subMC(l: T, r: U[T]): U[T]
 
-    def mulMS(l: T, r: U[T]): U[T]
+    def mulMC(l: T, r: U[T]): U[T]
 
-    def divMS(l: T, r: U[T]): U[T]
+    def divMC(l: T, r: U[T]): U[T]
 
     // binary ops for memeber and member
     def addMM(l: T, r: T): T
@@ -76,35 +73,35 @@ trait ValueRule[U[_], T] {
 
     def divMM(l: T, r: T): T
 
-    def ltSS(l: U[T], r: U[T]): U[Boolean]
+    def ltCC(l: U[T], r: U[T]): U[Boolean]
 
-    def lteSS(l: U[T], r: U[T]): U[Boolean]
+    def lteCC(l: U[T], r: U[T]): U[Boolean]
 
-    def gtSS(l: U[T], r: U[T]): U[Boolean]
+    def gtCC(l: U[T], r: U[T]): U[Boolean]
 
-    def gteSS(l: U[T], r: U[T]): U[Boolean]
+    def gteCC(l: U[T], r: U[T]): U[Boolean]
 
-    def eqSS(l: U[T], r: U[T]): U[Boolean]
+    def eqCC(l: U[T], r: U[T]): U[Boolean]
 
-    def ltSM(l: U[T], r: T): U[Boolean]
+    def ltCM(l: U[T], r: T): U[Boolean]
 
-    def lteSM(l: U[T], r: T): U[Boolean]
+    def lteCM(l: U[T], r: T): U[Boolean]
 
-    def gtSM(l: U[T], r: T): U[Boolean]
+    def gtCM(l: U[T], r: T): U[Boolean]
 
-    def gteSM(l: U[T], r: T): U[Boolean]
+    def gteCM(l: U[T], r: T): U[Boolean]
 
-    def eqSM(l: U[T], r: T): U[Boolean]
+    def eqCM(l: U[T], r: T): U[Boolean]
 
-    def ltMS(l: T, r: U[T]): U[Boolean]
+    def ltMC(l: T, r: U[T]): U[Boolean]
 
-    def lteMS(l: T, r: U[T]): U[Boolean]
+    def lteMC(l: T, r: U[T]): U[Boolean]
 
-    def gtMS(l: T, r: U[T]): U[Boolean]
+    def gtMC(l: T, r: U[T]): U[Boolean]
 
-    def gteMS(l: T, r: U[T]): U[Boolean]
+    def gteMC(l: T, r: U[T]): U[Boolean]
 
-    def eqMS(l: T, r: U[T]): U[Boolean]
+    def eqMC(l: T, r: U[T]): U[Boolean]
 
     def ltMM(l: T, r: T): Boolean
 
@@ -116,39 +113,39 @@ trait ValueRule[U[_], T] {
 
     def eqMM(l: T, r: T): Boolean
 
-    def posS(v: U[T]): U[T]
+    def posC(v: U[T]): U[T]
 
-    def negS(v: U[T]): U[T]
+    def negC(v: U[T]): U[T]
 
     def posM(v: T): T
 
     def negM(v: T): T
 
-    def transposeS(v: U[T]): U[T]
+    def transposeC(v: U[T]): U[T]
 
     def transposeM(v: T): T
 
-    def closeSS(l: U[T], r: U[T], eps: T): U[Boolean]
+    def closeCC(l: U[T], r: U[T], eps: T): U[Boolean]
 
-    def closeSM(l: U[T], r: T, eps: T): U[Boolean]
+    def closeCM(l: U[T], r: T, eps: T): U[Boolean]
 
-    def closeMS(l: T, r: U[T], eps: T): U[Boolean]
+    def closeMC(l: T, r: U[T], eps: T): U[Boolean]
 
     def closeMM(l: T, r: T, eps: T): Boolean
 
-    def whereSSS(cond: U[Boolean], a: U[T], b: U[T]): U[T]
+    def whereCCC(cond: U[Boolean], a: U[T], b: U[T]): U[T]
 
-    def whereSSM(cond: U[Boolean], a: U[T], b: T): U[T]
+    def whereCCM(cond: U[Boolean], a: U[T], b: T): U[T]
 
-    def whereSMS(cond: U[Boolean], a: T, b: U[T]): U[T]
+    def whereCMC(cond: U[Boolean], a: T, b: U[T]): U[T]
 
-    def whereSMM(cond: U[Boolean], a: T, b: T): U[T]
+    def whereCMM(cond: U[Boolean], a: T, b: T): U[T]
 
-    def whereMSS(cond: Boolean, a: U[T], b: U[T]): U[T]
+    def whereMCC(cond: Boolean, a: U[T], b: U[T]): U[T]
 
-    def whereMSM(cond: Boolean, a: U[T], b: T): U[T]
+    def whereMCM(cond: Boolean, a: U[T], b: T): U[T]
 
-    def whereMMS(cond: Boolean, a: T, b: U[T]): U[T]
+    def whereMMC(cond: Boolean, a: T, b: U[T]): U[T]
 
     def whereMMM(cond: Boolean, a: T, b: T): T
 

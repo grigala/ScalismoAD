@@ -84,7 +84,7 @@ case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     private var compGraph: Node[Scalar, Double] = Var(0.0)
 
     for (x <- data) yield {
-        val f = Neg(0.5 * pow(x - mu, 2) / (sigma * sigma)) - logNormalizer
+        val f = -0.5 * pow(x - mu, 2) / (sigma * sigma) - logNormalizer
         compGraph = compGraph + f
     }
 
@@ -93,8 +93,8 @@ case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     }
 
     def value: Double = {
-        val scalarValue = compGraph.apply().unwrap
-        scalarValue.data.asInstanceOf[Double]
+        val scalarValue = compGraph.apply().unwrap.data.asInstanceOf[Double]
+        scalarValue
     }
 
     def gradients: (Double, Double) = {

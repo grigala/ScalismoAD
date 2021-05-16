@@ -10,35 +10,35 @@ object DoubleRule {
 
         override def zeroM: Double = 0.0
 
-        override def zeroS(shape: Scalar[Double]): Scalar[Double] = Scalar(0.0)
+        override def zeroC(shape: Scalar[Double]): Scalar[Double] = Scalar(0.0)
 
         override def oneM: Double = 1.0
 
-        override def oneS(shape: Scalar[Double]): Scalar[Double] = Scalar(1.0)
+        override def oneC(shape: Scalar[Double]): Scalar[Double] = Scalar(1.0)
 
-        override def addSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data + r.data)
+        override def addCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data + r.data)
 
-        override def subSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data - r.data)
+        override def subCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data - r.data)
 
-        override def mulSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data * r.data)
+        override def mulCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data * r.data)
 
-        override def divSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data / r.data)
+        override def divCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Double] = Scalar(l.data / r.data)
 
-        override def addSM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data + r)
+        override def addCM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data + r)
 
-        override def subSM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data - r)
+        override def subCM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data - r)
 
-        override def mulSM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data * r)
+        override def mulCM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data * r)
 
-        override def divSM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data / r)
+        override def divCM(l: Scalar[Double], r: Double): Scalar[Double] = Scalar(l.data / r)
 
-        override def addMS(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l + r.data)
+        override def addMC(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l + r.data)
 
-        override def subMS(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l - r.data)
+        override def subMC(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l - r.data)
 
-        override def mulMS(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l * r.data)
+        override def mulMC(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l * r.data)
 
-        override def divMS(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l / r.data)
+        override def divMC(l: Double, r: Scalar[Double]): Scalar[Double] = Scalar(l / r.data)
 
         override def addMM(l: Double, r: Double): Double = l + r
 
@@ -48,35 +48,35 @@ object DoubleRule {
 
         override def divMM(l: Double, r: Double): Double = l / r
 
-        override def ltSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data < r.data)
+        override def ltCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data < r.data)
 
-        override def lteSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data <= r.data)
+        override def lteCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data <= r.data)
 
-        override def gtSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data > r.data)
+        override def gtCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data > r.data)
 
-        override def gteSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data >= r.data)
+        override def gteCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data >= r.data)
 
-        override def eqSS(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data == r.data)
+        override def eqCC(l: Scalar[Double], r: Scalar[Double]): Scalar[Boolean] = Scalar(l.data == r.data)
 
-        override def ltSM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data < r)
+        override def ltCM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data < r)
 
-        override def lteSM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data <= r)
+        override def lteCM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data <= r)
 
-        override def gtSM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data > r)
+        override def gtCM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data > r)
 
-        override def gteSM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data >= r)
+        override def gteCM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data >= r)
 
-        override def eqSM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data == r)
+        override def eqCM(l: Scalar[Double], r: Double): Scalar[Boolean] = Scalar(l.data == r)
 
-        override def ltMS(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l < r.data)
+        override def ltMC(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l < r.data)
 
-        override def lteMS(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l <= r.data)
+        override def lteMC(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l <= r.data)
 
-        override def gtMS(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l > r.data)
+        override def gtMC(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l > r.data)
 
-        override def gteMS(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l >= r.data)
+        override def gteMC(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l >= r.data)
 
-        override def eqMS(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l == r.data)
+        override def eqMC(l: Double, r: Scalar[Double]): Scalar[Boolean] = Scalar(l == r.data)
 
         override def ltMM(l: Double, r: Double): Boolean = l < r
 
@@ -88,27 +88,27 @@ object DoubleRule {
 
         override def eqMM(l: Double, r: Double): Boolean = l == r
 
-        override def posS(v: Scalar[Double]): Scalar[Double] = Scalar(+v.data)
+        override def posC(v: Scalar[Double]): Scalar[Double] = Scalar(+v.data)
 
-        override def negS(v: Scalar[Double]): Scalar[Double] = Scalar(-v.data)
+        override def negC(v: Scalar[Double]): Scalar[Double] = Scalar(-v.data)
 
         override def posM(v: Double): Double = +v
 
         override def negM(v: Double): Double = -v
 
-        override def transposeS(v: Scalar[Double]): Scalar[Double] = v
+        override def transposeC(v: Scalar[Double]): Scalar[Double] = v
 
         override def transposeM(v: Double): Double = v
 
-        override def closeSS(l: Scalar[Double], r: Scalar[Double], eps: Double = 1e-4): Scalar[Boolean] = {
+        override def closeCC(l: Scalar[Double], r: Scalar[Double], eps: Double = 1e-4): Scalar[Boolean] = {
             Scalar[Boolean](scala.math.abs(l.data - r.data) <= eps)
         }
 
-        override def closeSM(l: Scalar[Double], r: Double, eps: Double = 1e-4): Scalar[Boolean] = {
+        override def closeCM(l: Scalar[Double], r: Double, eps: Double = 1e-4): Scalar[Boolean] = {
             Scalar[Boolean](scala.math.abs(l.data - r) <= eps)
         }
 
-        override def closeMS(l: Double, r: Scalar[Double], eps: Double = 1e-4): Scalar[Boolean] = {
+        override def closeMC(l: Double, r: Scalar[Double], eps: Double = 1e-4): Scalar[Boolean] = {
             Scalar[Boolean](scala.math.abs(l - r.data) <= eps)
         }
 
@@ -116,19 +116,19 @@ object DoubleRule {
             scala.math.abs(l - r) <= eps
         }
 
-        override def whereSSS(cond: Scalar[Boolean], a: Scalar[Double], b: Scalar[Double]): Scalar[Double] = if (cond.data) a else b
+        override def whereCCC(cond: Scalar[Boolean], a: Scalar[Double], b: Scalar[Double]): Scalar[Double] = if (cond.data) a else b
 
-        override def whereSSM(cond: Scalar[Boolean], a: Scalar[Double], b: Double): Scalar[Double] = if (cond.data) a else Scalar(b)
+        override def whereCCM(cond: Scalar[Boolean], a: Scalar[Double], b: Double): Scalar[Double] = if (cond.data) a else Scalar(b)
 
-        override def whereSMS(cond: Scalar[Boolean], a: Double, b: Scalar[Double]): Scalar[Double] = if (cond.data) Scalar(a) else b
+        override def whereCMC(cond: Scalar[Boolean], a: Double, b: Scalar[Double]): Scalar[Double] = if (cond.data) Scalar(a) else b
 
-        override def whereSMM(cond: Scalar[Boolean], a: Double, b: Double): Scalar[Double] = if (cond.data) Scalar(a) else Scalar(b)
+        override def whereCMM(cond: Scalar[Boolean], a: Double, b: Double): Scalar[Double] = if (cond.data) Scalar(a) else Scalar(b)
 
-        override def whereMSS(cond: Boolean, a: Scalar[Double], b: Scalar[Double]): Scalar[Double] = if (cond) a else b
+        override def whereMCC(cond: Boolean, a: Scalar[Double], b: Scalar[Double]): Scalar[Double] = if (cond) a else b
 
-        override def whereMSM(cond: Boolean, a: Scalar[Double], b: Double): Scalar[Double] = if (cond) a else Scalar(b)
+        override def whereMCM(cond: Boolean, a: Scalar[Double], b: Double): Scalar[Double] = if (cond) a else Scalar(b)
 
-        override def whereMMS(cond: Boolean, a: Double, b: Scalar[Double]): Scalar[Double] = if (cond) Scalar(a) else b
+        override def whereMMC(cond: Boolean, a: Double, b: Scalar[Double]): Scalar[Double] = if (cond) Scalar(a) else b
 
         override def whereMMM(cond: Boolean, a: Double, b: Double): Double = if (cond) a else b
 

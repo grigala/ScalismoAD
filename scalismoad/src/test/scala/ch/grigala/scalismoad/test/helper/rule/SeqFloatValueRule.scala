@@ -18,29 +18,29 @@ class SeqFloatValueRule extends ValueRule[Seq, Float] {
 
     override def zeroM: Float = 0.0f
 
-    override def zeroS(shape: Seq[Float]): Seq[Float] = Seq.fill[Float](shape.size)(0)
+    override def zeroC(shape: Seq[Float]): Seq[Float] = Seq.fill[Float](shape.size)(0)
 
     override def oneM: Float = 1.0f
 
-    override def oneS(shape: Seq[Float]): Seq[Float] = Seq.fill[Float](shape.size)(1)
+    override def oneC(shape: Seq[Float]): Seq[Float] = Seq.fill[Float](shape.size)(1)
 
-    override def addSS(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a + b }
+    override def addCC(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a + b }
 
-    override def mulSS(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a * b }
+    override def mulCC(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a * b }
 
-    override def divSS(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a / b }
+    override def divCC(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a / b }
 
-    override def addSM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ + r)
+    override def addCM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ + r)
 
-    override def mulSM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ * r)
+    override def mulCM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ * r)
 
-    override def divSM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ / r)
+    override def divCM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ / r)
 
-    override def addMS(l: Float, r: Seq[Float]): Seq[Float] = r.map(l + _)
+    override def addMC(l: Float, r: Seq[Float]): Seq[Float] = r.map(l + _)
 
-    override def mulMS(l: Float, r: Seq[Float]): Seq[Float] = r.map(l * _)
+    override def mulMC(l: Float, r: Seq[Float]): Seq[Float] = r.map(l * _)
 
-    override def divMS(l: Float, r: Seq[Float]): Seq[Float] = r.map(l / _)
+    override def divMC(l: Float, r: Seq[Float]): Seq[Float] = r.map(l / _)
 
     override def addMM(l: Float, r: Float): Float = l + r
 
@@ -48,33 +48,33 @@ class SeqFloatValueRule extends ValueRule[Seq, Float] {
 
     override def divMM(l: Float, r: Float): Float = l / r
 
-    override def ltSS(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a < b }
+    override def ltCC(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a < b }
 
-    override def lteSS(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a <= b }
+    override def lteCC(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a <= b }
 
-    override def gtSS(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a > b }
+    override def gtCC(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a > b }
 
-    override def gteSS(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a >= b }
+    override def gteCC(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a >= b }
 
-    override def eqSS(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a == b }
+    override def eqCC(l: Seq[Float], r: Seq[Float]): Seq[Boolean] = l.zip(r).map { case (a, b) => a == b }
 
-    override def ltSM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ < r)
+    override def ltCM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ < r)
 
-    override def gtSM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ > r)
+    override def gtCM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ > r)
 
-    override def gteSM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ >= r)
+    override def gteCM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ >= r)
 
-    override def eqSM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ == r)
+    override def eqCM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ == r)
 
-    override def ltMS(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l < _)
+    override def ltMC(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l < _)
 
-    override def lteMS(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l <= _)
+    override def lteMC(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l <= _)
 
-    override def gtMS(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l > _)
+    override def gtMC(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l > _)
 
-    override def gteMS(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l >= _)
+    override def gteMC(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l >= _)
 
-    override def eqMS(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l == _)
+    override def eqMC(l: Float, r: Seq[Float]): Seq[Boolean] = r.map(l == _)
 
     override def ltMM(l: Float, r: Float): Boolean = l < r
 
@@ -84,37 +84,37 @@ class SeqFloatValueRule extends ValueRule[Seq, Float] {
 
     override def eqMM(l: Float, r: Float): Boolean = l == r
 
-    override def posS(v: Seq[Float]): Seq[Float] = v.map(+_)
+    override def posC(v: Seq[Float]): Seq[Float] = v.map(+_)
 
-    override def negS(v: Seq[Float]): Seq[Float] = v.map(-_)
+    override def negC(v: Seq[Float]): Seq[Float] = v.map(-_)
 
     override def posM(v: Float): Float = +v
 
     override def negM(v: Float): Float = -v
 
-    override def transposeS(v: Seq[Float]): Seq[Float] = v
+    override def transposeC(v: Seq[Float]): Seq[Float] = v
 
     override def transposeM(v: Float): Float = v
 
-    override def closeSS(l: Seq[Float], r: Seq[Float], eps: Float = 1e-4f): Seq[Boolean] = {
-        lteSM(subSS(l, r), eps)
+    override def closeCC(l: Seq[Float], r: Seq[Float], eps: Float = 1e-4f): Seq[Boolean] = {
+        lteCM(subCC(l, r), eps)
     }
 
-    override def subSS(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a - b }
+    override def subCC(l: Seq[Float], r: Seq[Float]): Seq[Float] = l.zip(r).map { case (a, b) => a - b }
 
-    override def closeSM(l: Seq[Float], r: Float, eps: Float = 1e-4f): Seq[Boolean] = {
-        lteSM(subSM(l, r), eps)
+    override def closeCM(l: Seq[Float], r: Float, eps: Float = 1e-4f): Seq[Boolean] = {
+        lteCM(subCM(l, r), eps)
     }
 
-    override def subSM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ - r)
+    override def subCM(l: Seq[Float], r: Float): Seq[Float] = l.map(_ - r)
 
-    override def closeMS(l: Float, r: Seq[Float], eps: Float = 1e-4f): Seq[Boolean] = {
-        lteSM(subMS(l, r), eps)
+    override def closeMC(l: Float, r: Seq[Float], eps: Float = 1e-4f): Seq[Boolean] = {
+        lteCM(subMC(l, r), eps)
     }
 
-    override def lteSM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ <= r)
+    override def lteCM(l: Seq[Float], r: Float): Seq[Boolean] = l.map(_ <= r)
 
-    override def subMS(l: Float, r: Seq[Float]): Seq[Float] = r.map(l - _)
+    override def subMC(l: Float, r: Seq[Float]): Seq[Float] = r.map(l - _)
 
     override def closeMM(l: Float, r: Float, eps: Float = 1e-4f): Boolean = {
         lteMM(subMM(l, r), eps)
@@ -124,31 +124,31 @@ class SeqFloatValueRule extends ValueRule[Seq, Float] {
 
     override def lteMM(l: Float, r: Float): Boolean = l <= r
 
-    override def whereSSS(cond: Seq[Boolean], a: Seq[Float], b: Seq[Float]): Seq[Float] = {
+    override def whereCCC(cond: Seq[Boolean], a: Seq[Float], b: Seq[Float]): Seq[Float] = {
         cond.zip(a.zip(b)).map { case (c, (x, y)) => if (c) x else y }
     }
 
-    override def whereSSM(cond: Seq[Boolean], a: Seq[Float], b: Float): Seq[Float] = {
+    override def whereCCM(cond: Seq[Boolean], a: Seq[Float], b: Float): Seq[Float] = {
         cond.zip(a).map { case (c, x) => if (c) x else b }
     }
 
-    override def whereSMS(cond: Seq[Boolean], a: Float, b: Seq[Float]): Seq[Float] = {
+    override def whereCMC(cond: Seq[Boolean], a: Float, b: Seq[Float]): Seq[Float] = {
         cond.zip(b).map { case (c, y) => if (c) a else y }
     }
 
-    override def whereSMM(cond: Seq[Boolean], a: Float, b: Float): Seq[Float] = {
+    override def whereCMM(cond: Seq[Boolean], a: Float, b: Float): Seq[Float] = {
         cond.map { case c => if (c) a else b }
     }
 
-    override def whereMSS(cond: Boolean, a: Seq[Float], b: Seq[Float]): Seq[Float] = {
+    override def whereMCC(cond: Boolean, a: Seq[Float], b: Seq[Float]): Seq[Float] = {
         if (cond) a else b
     }
 
-    override def whereMSM(cond: Boolean, a: Seq[Float], b: Float): Seq[Float] = {
+    override def whereMCM(cond: Boolean, a: Seq[Float], b: Float): Seq[Float] = {
         if (cond) a else a.map(_ => b)
     }
 
-    override def whereMMS(cond: Boolean, a: Float, b: Seq[Float]): Seq[Float] = {
+    override def whereMMC(cond: Boolean, a: Float, b: Seq[Float]): Seq[Float] = {
         if (cond) b.map(_ => a) else b
     }
 

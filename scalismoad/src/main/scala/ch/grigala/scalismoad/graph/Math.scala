@@ -396,13 +396,13 @@ object dot {
 object where {
     def apply[U[_], T](cond: Value[U, Boolean], a: Value[U, T], b: Value[U, T])(implicit mr: MathRule[U, T]): Value[U, T] = (cond, a, b) match {
         case (cond: NonContainerValue[U, Boolean], a: NonContainerValue[U, T], b: NonContainerValue[U, T]) => NonContainerValue[U, T](mr.whereMMM(cond.data, a.data, b.data))
-        case (cond: NonContainerValue[U, Boolean], a: NonContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereMMS(cond.data, a.data, b.data))
-        case (cond: NonContainerValue[U, Boolean], a: ContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereMSM(cond.data, a.data, b.data))
-        case (cond: NonContainerValue[U, Boolean], a: ContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereMSS(cond.data, a.data, b.data))
-        case (cond: ContainerValue[U, Boolean], a: NonContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereSMM(cond.data, a.data, b.data))
-        case (cond: ContainerValue[U, Boolean], a: NonContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereSMS(cond.data, a.data, b.data))
-        case (cond: ContainerValue[U, Boolean], a: ContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereSSM(cond.data, a.data, b.data))
-        case (cond: ContainerValue[U, Boolean], a: ContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereSSS(cond.data, a.data, b.data))
+        case (cond: NonContainerValue[U, Boolean], a: NonContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereMMC(cond.data, a.data, b.data))
+        case (cond: NonContainerValue[U, Boolean], a: ContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereMCM(cond.data, a.data, b.data))
+        case (cond: NonContainerValue[U, Boolean], a: ContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereMCC(cond.data, a.data, b.data))
+        case (cond: ContainerValue[U, Boolean], a: NonContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereCMM(cond.data, a.data, b.data))
+        case (cond: ContainerValue[U, Boolean], a: NonContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereCMC(cond.data, a.data, b.data))
+        case (cond: ContainerValue[U, Boolean], a: ContainerValue[U, T], b: NonContainerValue[U, T]) => ContainerValue[U, T](mr.whereCCM(cond.data, a.data, b.data))
+        case (cond: ContainerValue[U, Boolean], a: ContainerValue[U, T], b: ContainerValue[U, T]) => ContainerValue[U, T](mr.whereCCC(cond.data, a.data, b.data))
     }
 }
 

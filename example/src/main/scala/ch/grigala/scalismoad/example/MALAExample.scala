@@ -64,8 +64,7 @@ case class MALALikelihoodEvaluator(data: Seq[Double])
 
         val g = NormalGaussianLogLikelihood(theta, data)
         // make sure values match
-        //        assert(g.value == likelihoods.sum, s"was ${g.value}, expected ${likelihoods.sum}")
-        ~=(g.value, likelihoods.sum, 1e-10)
+        ~=(g.value, likelihoods.sum)
         g.value
     }
 
@@ -110,29 +109,46 @@ object MALAPriorEvaluator
     extends DistributionEvaluator[MALASample]
         with GradientEvaluator[MALASample] {
 
-    val priorDistMu = breeze.stats.distributions.Gaussian(0, 10)
-    val priorDistSigma = breeze.stats.distributions.Gaussian(0, 20)
+    // Just for testing
+    val priorDistMuOld = breeze.stats.distributions.Gaussian(0, 10)
+    val priorDistSigmaOld = breeze.stats.distributions.Gaussian(0, 20)
+
+    val priorDistMu = MALAParameters(mu = 0, sigma = 10)
+    val priorDistSigma = MALAParameters(mu = 0, sigma = 20)
 
     override def logValue(theta: MALASample): Double = {
-        val priorDistParams = MALAParameters(mu = 0, sigma = 10)
-        val priorDistParams1 = MALAParameters(mu = 0, sigma = 20)
 
-        val priorSample = theta.copy(parameters = priorDistParams)
-        val priorSample1 = theta.copy(parameters = priorDistParams1)
+        val priorSample = theta.copy(parameters = priorDistMu)
+        val priorSample1 = theta.copy(parameters = priorDistSigma)
 
         val g1 = NormalGaussianLogLikelihood(priorSample, Seq(theta.parameters.mu))
         val g2 = NormalGaussianLogLikelihood(priorSample1, Seq(theta.parameters.sigma))
 
         val value = g1.value + g2.value
-        val calc = priorDistMu.logPdf(theta.parameters.mu) + priorDistSigma.logPdf(theta.parameters.sigma)
-        ~=(value, calc, 1e-10)
+        val calc = priorDistMuOld.logPdf(theta.parameters.mu) + priorDistSigmaOld.logPdf(theta.parameters.sigma)
+        // Testing primal value correctness
+        ~=(value, calc)
         value
     }
 
     override def gradient(sample: MALASample): MALASample = {
-        val gradMu = -(sample.parameters.mu - priorDistMu.mean) / priorDistMu.variance
-        val gradSigma = -(sample.parameters.sigma - priorDistSigma.mean) / priorDistSigma.variance
-        sample.copy(parameters = sample.parameters.copy(mu = gradMu, sigma = gradSigma))
+        val priorSampleMu = sample.copy(parameters = priorDistMu)
+        val priorSampleSigma = sample.copy(parameters = priorDistSigma)
+
+        val g1 = NormalGaussianLogLikelihood(priorSampleMu, Seq(sample.parameters.mu))
+        val g2 = NormalGaussianLogLikelihood(priorSampleSigma, Seq(sample.parameters.sigma))
+
+        val gradMu = -(sample.parameters.mu - priorDistMuOld.mean) / priorDistMuOld.variance
+        val gradSigma = -(sample.parameters.sigma - priorDistSigmaOld.mean) / priorDistSigmaOld.variance
+
+        val muGrad = -g1.gradients._1
+        val sigmaGrad = -g2.gradients._1
+
+        // Testing gradient correctness
+        ~=(muGrad, gradMu)
+        ~=(sigmaGrad, gradSigma)
+
+        sample.copy(parameters = sample.parameters.copy(mu = muGrad, sigma = sigmaGrad))
     }
 
 }

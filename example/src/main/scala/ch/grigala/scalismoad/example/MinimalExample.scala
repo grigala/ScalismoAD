@@ -108,6 +108,7 @@ object MinimalExample {
     def main(args: Array[String]): Unit = {
 
         scalismo.initialize()
+        val start = System.currentTimeMillis()
         implicit val rng = scalismo.utils.Random(42)
 
         val data = generateSyntheticData(100)
@@ -129,5 +130,7 @@ object MinimalExample {
         val estimatedSigma = samples.map(sample => sample.parameters.sigma).sum / samples.size
 
         println((estimatedMean, estimatedSigma))
+        val end = System.currentTimeMillis()
+        println(s"took: ${(end - start)}")
     }
 }

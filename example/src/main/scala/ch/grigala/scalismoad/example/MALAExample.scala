@@ -81,6 +81,9 @@ case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     private val sigma = Var(theta.parameters.sigma)
     private val logNormalizer = log(sqrt(2.0 * scala.math.Pi)) + log(sigma)
     private var compGraph: Node[Scalar, Double] = Var(0.0)
+    private var sum: Double = 0.0
+    private var dfdmu: Double = 0.0
+    private var dfdsigma: Double = 0.0
 
     for (x <- data) yield {
         val f = -0.5 * pow(x - mu, 2) / (sigma * sigma) - logNormalizer
@@ -92,14 +95,14 @@ case class NormalGaussianLogLikelihood(theta: MALASample, data: Seq[Double]) {
     }
 
     def value: Double = {
-        val scalarValue = compGraph.apply().unwrap.data.asInstanceOf[Double]
+        val scalarValue = compGraph.apply().unwrapContainerValue.data
         scalarValue
     }
 
     def gradients: (Double, Double) = {
         compGraph.grad()
-        val dfdmu = mu.gradient.unwrap.data.asInstanceOf[Double]
-        val dfdsigma = sigma.gradient.unwrap.data.asInstanceOf[Double]
+        val dfdmu = mu.gradient.unwrapContainerValue.data
+        val dfdsigma = sigma.gradient.unwrapContainerValue.data
         (dfdmu, dfdsigma)
     }
 }
@@ -170,7 +173,7 @@ object MALAExample {
 
         scalismo.initialize()
         implicit val rng = scalismo.utils.Random(42)
-
+        val start = System.currentTimeMillis()
         val data = generateSyntheticData(100)
 
         // We use the new method  withGradient of the productEvaluator to combine evaluators that have gradients
@@ -192,6 +195,8 @@ object MALAExample {
         val estimatedSigma = samples.map(sample => sample.parameters.sigma).sum / samples.size
 
         println((estimatedMean, estimatedSigma))
+        val end = System.currentTimeMillis()
+        println(s"took: ${end - start}")
     }
 }
 

@@ -124,8 +124,9 @@ case class NonContainerValue[U[_], T](data: T) extends Value[U, T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T] = NonContainerValue[U, T](vr.transposeM(data))
 
-    override def unwrap: Scalar[_] = Scalar(data)
+    override def unwrapContainerValue: U[T] = ???
 
+    override def unwrapNonContainerValue: T = data
 }
 
 

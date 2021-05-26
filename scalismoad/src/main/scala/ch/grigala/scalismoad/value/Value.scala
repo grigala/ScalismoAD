@@ -51,6 +51,8 @@ abstract class Value[U[_], T] {
 
     def T()(implicit vr: ValueRule[U, T]): Value[U, T]
 
-    def unwrap: Scalar[_]
+    def unwrapContainerValue: U[T]
+
+    def unwrapNonContainerValue: T
 }
 

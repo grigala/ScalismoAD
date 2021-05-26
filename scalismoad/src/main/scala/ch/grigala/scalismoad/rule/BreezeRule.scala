@@ -412,6 +412,7 @@ object BreezeRule {
         override def dotMS(a: D, b: DM): DM = a *:* b
 
         override def dotMM(a: D, b: D): D = a *:* b
+
     }
 
     class DenseVectorRule extends DenseVectorValueRule with DenseVectorMathRule

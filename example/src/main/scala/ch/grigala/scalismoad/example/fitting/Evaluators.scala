@@ -7,16 +7,17 @@ import ch.grigala.scalismoad.stats.{MultivariateNormalLogLikelihoodWGradient, Un
 import scalismo.common.PointId
 import scalismo.geometry.{Point, _3D}
 import scalismo.mesh.TriangleMesh
-import scalismo.sampling.DistributionEvaluator
+import scalismo.sampling.{DistributionEvaluator, GradientEvaluator}
 import scalismo.statisticalmodel.{MultivariateNormalDistribution, PointDistributionModel}
 import scalismo.utils.Memoize
 import shapeless.syntax.std.tuple.productTupleOps
 
 object Evaluators {
 
-    case class PriorEvaluator(model: PointDistributionModel[_3D, TriangleMesh]) extends DistributionEvaluator[SampleLF] {
+    case class PriorEvaluator(model: PointDistributionModel[_3D, TriangleMesh]) extends DistributionEvaluator[SampleLF]
+        with GradientEvaluator[SampleLF] {
 
-        // Remove after test is passing robustly
+        // Remove after test is passing consistently
         val translationPrior = breeze.stats.distributions.Gaussian(0.0, 5.0)
         val rotationPrior = breeze.stats.distributions.Gaussian(0, 0.1)
 
@@ -40,15 +41,23 @@ object Evaluators {
 
             ~=(tpSum.value, testTranslationSum, 1e-10)
             ~=(rpSum.value, testRotationSum, 1e-10)
-            ~=(modelCoeffSum.value, model.gp.logpdf(sample.parameters.modelCoefficients), 1e-10)
 
-            modelCoeffSum.value + tpSum.value + rpSum.value
+            model.gp.logpdf(sample.parameters.modelCoefficients) + tpSum.value + rpSum.value
+        }
+
+        override def gradient(sample: SampleLF): SampleLF = {
+            val tpSum = UnivariateNormalLogLikelihoodWGradient(0.0, 5.0, sample.parameters.translationParametersLF.toArray)
+
+            sample.copy(
+
+            )
         }
     }
 
+
     case class CorrespondenceEvaluator(model: PointDistributionModel[_3D, TriangleMesh],
                                        correspondences: Seq[(PointId, Point[_3D], MultivariateNormalDistribution)])
-        extends DistributionEvaluator[SampleLF] {
+        extends DistributionEvaluator[SampleLF] with GradientEvaluator[SampleLF] {
 
 
         val (marginalizedModel, newCorrespondences) = marginalizeModelForCorrespondences(model, correspondences)
@@ -63,19 +72,28 @@ object Evaluators {
                 val (id, targetPoint, uncertainty) = correspondence
                 val modelInstancePoint = currModelInstance.pointSet.point(id)
                 val observedDeformation = targetPoint - modelInstancePoint
-                uncertainty.logpdf(observedDeformation.toBreezeVector)
+                val logpdf = uncertainty.logpdf(observedDeformation.toBreezeVector)
+                logpdf
             })
 
             val loglikelihood = likelihoods.sum
             loglikelihood
         }
+
+        override def gradient(sample: SampleLF): SampleLF = ???
     }
 
-    case class CachedEvaluator[A](evaluator: DistributionEvaluator[A]) extends DistributionEvaluator[A] {
+    case class CachedEvaluator[A](evaluator: DistributionEvaluator[A] with GradientEvaluator[A])
+        extends DistributionEvaluator[A] with GradientEvaluator[A] {
         val memoizedLogValue = Memoize(evaluator.logValue, 10)
+        val memoizedGradientValue = Memoize(evaluator.gradient, 10)
 
         override def logValue(sample: A): Double = {
             memoizedLogValue(sample)
+        }
+
+        override def gradient(sample: A): A = {
+            memoizedGradientValue(sample)
         }
     }
 

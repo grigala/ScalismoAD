@@ -14,11 +14,12 @@ import ch.grigala.scalismoad.rule.ScalarRule.Implicits._
 case class UnivariateNormalLogLikelihoodWGradient(mu: Double, sigma: Double, data: Seq[Double]) {
     private val mean = Var(mu)
     private val variance = Var(sigma)
-    private val logNormalizer = log(sqrt(2.0 * scala.math.Pi)) + log(sigma)
+    private val logNormalizer = log(sqrt(2.0 * scala.math.Pi)) + log(variance)
     private var compGraph: Node[Scalar, Double] = Var(0.0)
 
+
     for (x <- data) yield {
-        val f = Neg(0.5 * pow(x - mu, 2) / (sigma * sigma)) - logNormalizer
+        val f = Neg(0.5 * pow(x - mean, 2) / (variance * variance)) - logNormalizer
         compGraph = compGraph + f
     }
 
@@ -27,16 +28,16 @@ case class UnivariateNormalLogLikelihoodWGradient(mu: Double, sigma: Double, dat
     }
 
     def value: Double = {
-        val scalarValue = compGraph.apply().unwrap
-        scalarValue.data.asInstanceOf[Double]
+        val scalarValue = compGraph.apply().unwrapContainerValue.data
+        scalarValue
     }
 
     def gradients: (Double, Double) = {
         // Calculates full gradient and stores partial differential values in .gradient
-        val ∇ = compGraph.grad()
+        val grad = compGraph.grad()
 
-        val `∂z∕∂mu` = mean.gradient.unwrap.data.asInstanceOf[Double]
-        val `∂z∕∂sigma` = variance.gradient.unwrap.data.asInstanceOf[Double]
-        (`∂z∕∂mu`, `∂z∕∂sigma`)
+        val dzdmu = mean.gradient.unwrapContainerValue.data
+        val dzdsigma = variance.gradient.unwrapContainerValue.data
+        (dzdmu, dzdsigma)
     }
 }

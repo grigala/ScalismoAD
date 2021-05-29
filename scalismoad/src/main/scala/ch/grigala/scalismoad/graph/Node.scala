@@ -1,7 +1,8 @@
 package ch.grigala.scalismoad.graph
 
+import breeze.linalg.DenseMatrix
 import ch.grigala.scalismoad.rule.ValueRule
-import ch.grigala.scalismoad.value.Value
+import ch.grigala.scalismoad.value.{ContainerValue, Value}
 
 // The most fundamental component of computational graph for automatic derivation.
 // Every node in a computational graph must inherit Node.
@@ -27,7 +28,11 @@ trait Node[U[_], T] {
 
     def -(rhs: Node[U, T])(implicit r: ValueRule[U, T]): Node[U, T] = Sub(this, rhs)
 
-    def *(rhs: Node[U, T])(implicit r: ValueRule[U, T]): Node[U, T] = Mul(this, rhs)
+    def *(rhs: Node[U, T])(implicit r: ValueRule[U, T]): Node[U, T] = {
+
+        // TODO: match and call different Mul implementation based on what kind of node comes in
+        Mul(this, rhs)
+    }
 
     def /(rhs: Node[U, T])(implicit r: ValueRule[U, T]): Node[U, T] = Div(this, rhs)
 

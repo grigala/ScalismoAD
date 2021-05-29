@@ -39,18 +39,17 @@ object Evaluators {
                 rotationPrior.logPdf(sample.parameters.rotationParametersLF._2) +
                 rotationPrior.logPdf(sample.parameters.rotationParametersLF._3)
 
+            val testModelCoeffs = model.gp.logpdf(sample.parameters.modelCoefficients)
+
             ~=(tpSum.value, testTranslationSum, 1e-10)
             ~=(rpSum.value, testRotationSum, 1e-10)
+            ~=(modelCoeffSum.value, testModelCoeffs, 1e-10)
 
-            model.gp.logpdf(sample.parameters.modelCoefficients) + tpSum.value + rpSum.value
+            modelCoeffSum.value + tpSum.value + rpSum.value
         }
 
         override def gradient(sample: SampleLF): SampleLF = {
-            val tpSum = UnivariateNormalLogLikelihoodWGradient(0.0, 5.0, sample.parameters.translationParametersLF.toArray)
-
-            sample.copy(
-
-            )
+            sample.copy()
         }
     }
 

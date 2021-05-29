@@ -190,7 +190,7 @@ trait ScalarIntMathRule extends MathRule[Scalar, Int] {
 
     override def tanhM(v: Int): Int = scala.math.tanh(v.toDouble).toInt
 
-    override def lnM(v: Int): Int = scala.math.log(v.toDouble).toInt
+    override def logM(v: Int): Int = scala.math.log(v.toDouble).toInt
 
     override def expM(v: Int): Int = scala.math.exp(v.toDouble).toInt
 

@@ -335,7 +335,7 @@ object log {
     def apply[U[_], T](v: Node[U, T])(implicit vr: MathRule[U, T]): log[U, T] = new log(v)
 
     def apply[U[_], T](v: Value[U, T])(implicit mr: MathRule[U, T]): Value[U, T] = v match {
-        case v: NonContainerValue[U, T] => NonContainerValue[U, T](mr.lnM(v.data))
+        case v: NonContainerValue[U, T] => NonContainerValue[U, T](mr.logM(v.data))
         case v: ContainerValue[U, T] => ContainerValue[U, T](mr.logS(v.data))
     }
 }

@@ -180,7 +180,7 @@ object DoubleRule {
 
         override def tanhM(v: Double): Double = scala.math.tanh(v)
 
-        override def lnM(v: Double): Double = scala.math.log(v)
+        override def logM(v: Double): Double = scala.math.log(v)
 
         override def expM(v: Double): Double = scala.math.exp(v)
 

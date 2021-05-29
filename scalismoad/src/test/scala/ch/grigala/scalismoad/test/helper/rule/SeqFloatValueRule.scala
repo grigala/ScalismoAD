@@ -204,7 +204,7 @@ trait SeqFloatMathRule extends MathRule[Seq, Float] {
 
     override def tanhM(v: Float): Float = scala.math.tanh(v.toDouble).toFloat
 
-    override def lnM(v: Float): Float = scala.math.log(v.toDouble).toFloat
+    override def logM(v: Float): Float = scala.math.log(v.toDouble).toFloat
 
     override def expM(v: Float): Float = scala.math.exp(v.toDouble).toFloat
 

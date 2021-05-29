@@ -187,7 +187,7 @@ object BreezeRule {
 
         override def tanhM(v: D): D = breeze.numerics.tanh(v)
 
-        override def lnM(v: D): D = breeze.numerics.log(v)
+        override def logM(v: D): D = breeze.numerics.log(v)
 
         override def expM(v: D): D = breeze.numerics.exp(v)
 
@@ -213,7 +213,11 @@ object BreezeRule {
         override def dotMM(a: D, b: D): D = a *:* b
     }
 
-    trait DenseMatrixValueRule extends ValueRule[DenseMatrix, D] {
+    trait DenseMatrixValueRule extends ValueRule[DenseMatrix, D] with ValueRuleBreeze[DenseMatrix, DenseVector, Double] {
+
+        override def mulMV(l: DenseMatrix[D], r: DenseVector[D]): DenseVector[D] = {
+            l * r
+        }
 
         override def zeroM: D = 0.0
 
@@ -225,7 +229,7 @@ object BreezeRule {
 
         override def addSS(l: DM, r: DM): DM = l + r
 
-        override def mulSS(l: DM, r: DM): DM = l *:* r
+        override def mulSS(l: DM, r: DM): DM = l * r
 
         override def divSS(l: DM, r: DM): DM = l /:/ r
 
@@ -388,7 +392,7 @@ object BreezeRule {
 
         override def tanhM(v: D): D = breeze.numerics.tanh(v)
 
-        override def lnM(v: D): D = breeze.numerics.log(v)
+        override def logM(v: D): D = breeze.numerics.log(v)
 
         override def expM(v: D): D = breeze.numerics.exp(v)
 

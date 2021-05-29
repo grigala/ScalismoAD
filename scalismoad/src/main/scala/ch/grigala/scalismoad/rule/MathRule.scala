@@ -46,7 +46,7 @@ trait MathRule[U[_], T] extends ValueRule[U, T] {
 
     def tanhM(v: T): T
 
-    def lnM(v: T): T
+    def logM(v: T): T
 
     def expM(v: T): T
 

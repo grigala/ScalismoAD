@@ -1,6 +1,6 @@
 package ch.grigala.scalismoad.graph
 
-import ch.grigala.scalismoad.rule.ValueRule
+import ch.grigala.scalismoad.rule.{ValueRule, ValueRuleBreeze}
 import ch.grigala.scalismoad.value.Value
 
 case class Add[U[_], T](lhs: Node[U, T], rhs: Node[U, T])(implicit vr: ValueRule[U, T]) extends BinaryOp[U, T] {
@@ -37,6 +37,16 @@ case class Mul[U[_], T](lhs: Node[U, T], rhs: Node[U, T])(implicit r: ValueRule[
         lhs.propagate(g * rhs()) + rhs.propagate(g * lhs())
     }
 }
+
+//case class Mul2[U[_], V[_], T](lhs: Node[U, T], rhs: Node[V, T])(implicit r: ValueRuleBreeze[U[_], V[_], T]) extends BinaryOp[U[_], V[_]] {
+//    override def toString: String = super.toString
+//
+//    override def apply(): Value[U[_], V[_]] = super.apply()
+//
+//    override def deriv(wrt: Var[U[_], V[_]]): Value[U[_], V[_]] = ???
+//
+//    override def propagate(g: Value[U[_], V[_]]): Value[U[_], V[_]] = ???
+//}
 
 case class Div[U[_], T](lhs: Node[U, T], rhs: Node[U, T])(implicit r: ValueRule[U, T]) extends BinaryOp[U, T] {
     override def toString: String = s"(${lhs.toString} / ${rhs.toString})"
